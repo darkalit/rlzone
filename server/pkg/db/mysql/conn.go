@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/darkalit/rlzone/server/config"
+	"github.com/darkalit/rlzone/server/internal/items"
 )
 
 func NewMySqlDB(c *config.Config) (*gorm.DB, error) {
@@ -41,6 +42,11 @@ func NewMySqlDB(c *config.Config) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	db.AutoMigrate(
+		&items.Item{},
+		&items.Stock{},
+	)
 
 	return db, nil
 }
