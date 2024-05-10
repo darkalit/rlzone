@@ -34,61 +34,41 @@ func (e RestError) Cause() interface{} {
 	return e.ErrCause
 }
 
+func NewRestError(status int, error string, cause interface{}) RestErr {
+	return RestError{
+		ErrStatus: status,
+		ErrError:  error,
+		ErrCause:  cause,
+	}
+}
+
 func parseValidatorError(err error) RestErr {
 	switch {
 	default:
-		return RestError{
-			ErrStatus: http.StatusBadRequest,
-			ErrError:  "Bad request",
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusBadRequest, "Bad request", err)
 	}
 }
 
 func ParseError(err error) RestErr {
 	switch {
 	case errors.Is(err, gorm.ErrRecordNotFound):
-		return RestError{
-			ErrStatus: http.StatusNotFound,
-			ErrError:  "Not Found",
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusNotFound, "Not Found", err)
 	case errors.Is(err, context.DeadlineExceeded):
-		return RestError{
-			ErrStatus: http.StatusRequestTimeout,
-			ErrError:  "Request timeout",
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusRequestTimeout, "Request Timeout", err)
 	case strings.Contains(err.Error(), "Field validation"):
 		return parseValidatorError(err)
 	case strings.Contains(err.Error(), "Unmarshal"):
-		return RestError{
-			ErrStatus: http.StatusBadRequest,
-			ErrError:  "Bad request",
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusBadRequest, "Bad Request", err)
 	case strings.Contains(strings.ToLower(err.Error()), "parse"):
-		return RestError{
-			ErrStatus: http.StatusBadRequest,
-			ErrError:  err.Error(),
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusBadRequest, err.Error(), err)
 	case strings.Contains(err.Error(), "UUID"):
-		return RestError{
-			ErrStatus: http.StatusBadRequest,
-			ErrError:  err.Error(),
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusBadRequest, err.Error(), err)
 	default:
 		if restErr, ok := err.(RestErr); ok {
 			return restErr
 		}
 
-		return RestError{
-			ErrStatus: http.StatusInternalServerError,
-			ErrError:  "Internal server error",
-			ErrCause:  err,
-		}
+		return NewRestError(http.StatusInternalServerError, "Internal server error", err)
 	}
 }
 
