@@ -6,9 +6,25 @@ import Button, { ButtonType } from "../../UI/Button/Button";
 import MagnifyingGlass from "../../Images/MagnifyingGlass.svg";
 import UserPhoto from "../../Images/userPhoto.svg";
 import Credits from "../../Images/Credits.svg";
-import { ArrayTable } from "../../UI";
+import { ArrayTable, ObjectTable } from "../../UI";
 
 export default function UserControl() {
+  const obj = {
+    ID: 35,
+    Name: "Honda Civic Type R",
+    Type: "Body",
+    Quality: "Limited",
+    Hitbox: "Octane",
+    Reactive: false,
+    TradeIn: false,
+    Paintable: true,
+    Blueprints: false,
+    Released: "7th September 2022",
+    Platform: "All",
+    Sideswipe: "Not available",
+    Series: "-",
+  };
+
   const head = {
     ID: function () {
       console.log("1");
@@ -84,6 +100,9 @@ export default function UserControl() {
                   head={head}
                   className="main-table"
                 />
+              </div>
+              <div className="main-description-table grey-container">
+                <ObjectTable data={obj} />
               </div>
             </div>
             <div className="main-content-sidebar">
