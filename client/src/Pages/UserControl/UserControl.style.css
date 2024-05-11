@@ -1,7 +1,7 @@
 :root {
-  --bg-main: #070A0C;
-  --bg-secondary: #232B30;
-  --bg-secondary-shade: #1B2328;
+  --bg-main: #070a0c;
+  --bg-secondary: #232b30;
+  --bg-secondary-shade: #1b2328;
   --text-main: #fff;
   --text-secondary: #070a0c;
   --primary-400: #39b2ff;
@@ -28,14 +28,18 @@ body {
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 72px;
   bottom: 1;
   margin: auto;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center top, rgba(0, 122, 198, 0.3) 0%, rgba(0, 122, 198, 0) 65%);
+  background: radial-gradient(
+    circle at center top,
+    rgba(0, 122, 198, 0.3) 0%,
+    rgba(0, 122, 198, 0) 65%
+  );
   pointer-events: none;
 }
 
@@ -74,8 +78,7 @@ main {
   padding-left: 16px;
   background: var(--bg-secondary);
   border: double 1px transparent;
-  background-image:
-    linear-gradient(var(--bg-secondary), var(--bg-secondary)),
+  background-image: linear-gradient(var(--bg-secondary), var(--bg-secondary)),
     linear-gradient(to bottom, rgba(100, 195, 255, 0.5), rgba(100, 195, 255, 0));
   border-radius: 16px;
   background-origin: border-box;
@@ -278,66 +281,6 @@ main {
   /* width: 100%; */
   width: 879px;
   height: fit-content;
-}
-
-td,
-th {
-  border: 1px solid #000;
-  font-weight: 400;
-  font-size: 16px;
-  height: 40px;
-  line-height: 125%;
-  text-align: center;
-  width: fit-content;
-  padding: 10px 24px;
-  color: var(--text-main);
-  background: var(--bg-secondary-shade);
-}
-
-thead {
-  border-radius: 16px 16px 0px 16px;
-  background: var(--bg-secondary);
-  border-top: none;
-}
-
-th:first-child,
-td:first-child {
-  border-radius: 16px 0px 0px 0px;
-  border-top: none;
-  border-left: none;
-}
-
-.table-top-row {
-  background: var(--bg-secondary);
-  border-top: none;
-}
-
-.top-right-row {
-  border-top: none;
-  border-radius: 0px 16px 0px 0px;
-}
-
-th:last-child,
-td:last-child {
-  border-top: none;
-  border-right: none;
-}
-
-tr:last-child td:first-child {
-  border-bottom-left-radius: 16px;
-}
-
-tr:last-child td:last-child {
-  border-bottom-right-radius: 16px;
-}
-
-tr:last-child td {
-  border-bottom: none;
-}
-
-.table-left-column {
-  width: 70px;
-  background: var(--bg-secondary)
 }
 
 .main-block-description {

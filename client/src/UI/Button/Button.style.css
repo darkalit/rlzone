@@ -22,7 +22,7 @@
 .button-outline {
   border: 2px solid var(--primary-400);
   border-radius: 16px;
-  padding: 6px 24px;
+  padding: 8px 24px;
   height: 40px;
   font-weight: 600;
   font-size: 16px;
@@ -125,5 +125,26 @@
 }
 
 .button-gradient-no-glow:active {
+  transform: translateY(1px);
+}
+
+.button-ban {
+  border: 2px solid var(--misc-failure);
+  border-radius: 16px;
+  padding: 8px 24px;
+  height: 40px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-main);
+  cursor: pointer;
+  background: transparent;
+  transition: box-shadow 0.3s ease;
+}
+
+.button-ban:hover {
+  box-shadow: 0 0 24px var(--misc-failure);
+}
+
+.button-ban:active {
   transform: translateY(1px);
 }

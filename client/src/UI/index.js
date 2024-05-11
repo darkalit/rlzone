@@ -1,3 +1,4 @@
 import Button from "./Button/Button";
+import ArrayTable from "./ArrayTable/ArrayTable";
 
-export { Button };
+export { Button, ArrayTable };

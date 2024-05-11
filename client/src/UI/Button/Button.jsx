@@ -6,51 +6,44 @@ export const ButtonType = Object.freeze({
   Outline: "outline",
   Gradient: "gradient",
   GradientNoGlow: "gradient-no-glow",
+  Ban: "ban",
 });
 
-function Button(props) {
+export default function Button({ pv = "8px", ph = "24px", width, type, text }) {
   const style = {
-    padding: `${props.pv} ${props.ph}`,
-    "whiteSpace": "nowrap",
+    padding: `${pv} ${ph}`,
+    whiteSpace: "nowrap",
   };
 
-  if (props.width) {
-    style.width = props.width;
+  if (width) {
+    style.width = width;
   }
 
-  switch (props.type) {
+  let typeClass = null;
+
+  switch (type) {
     case ButtonType.Fill:
-      return (
-        <button className="button-fill" style={style}>
-          {props.text}
-        </button>
-      );
+      typeClass = "button-fill";
+      break;
     case ButtonType.Outline:
-      return (
-        <button className="button-outline" style={style}>
-          {props.text}
-        </button>
-      );
+      typeClass = "button-outline";
+      break;
     case ButtonType.Gradient:
-      return (
-        <button className="button-gradient" style={style}>
-          {props.text}
-        </button>
-      );
+      typeClass = "button-gradient";
+      break;
     case ButtonType.GradientNoGlow:
-      return (
-        <button className="button-gradient-no-glow" style={style}>
-          {props.text}
-        </button>
-      );
+      typeClass = "button-gradient-no-glow";
+      break;
+    case ButtonType.Ban:
+      typeClass = "button-ban";
+      break;
     default:
       return null;
   }
+
+  return (
+    <button className={typeClass} style={style}>
+      {text}
+    </button>
+  );
 }
-
-Button.defaultProps = {
-  pv: "8px",
-  ph: "24px",
-};
-
-export default Button;
