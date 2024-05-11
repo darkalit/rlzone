@@ -19,7 +19,6 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	v1 := e.Group("/api/v1")
 
 	healthHandler := health.NewHandler()
-	health.MapHealthRoutes(v1, healthHandler)
 
 	usersRepo := users.NewUserRepository(s.db)
 	usersUseCase := users.NewUserUseCase(usersRepo, s.config)
@@ -30,6 +29,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	itemsHandler := items.NewHandler(s.config, itemsUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
+	routes.MapHealthRoutes(v1, healthHandler)
 	routes.MapUserRoutes(v1, usersHandler, mw)
 	routes.MapItemRoutes(v1, itemsHandler, mw)
 
