@@ -11,7 +11,7 @@ export const ButtonType = Object.freeze({
 function Button(props) {
   const style = {
     padding: `${props.pv} ${props.ph}`,
-    "white-space": "nowrap",
+    "whiteSpace": "nowrap",
   };
 
   if (props.width) {

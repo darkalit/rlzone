@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 export default function App() {
   return (
     <>
-      <Header role="Guest" />
+      <Header role="User" />
 
       <Routes>
         <Route exact path="/" element={<UserControl />} />

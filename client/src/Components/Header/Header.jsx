@@ -3,6 +3,13 @@ import "./Header.style.css";
 import { useLocation, Link } from "react-router-dom";
 import Button, { ButtonType } from "../../UI/Button/Button";
 
+import LogoMain from "../../Images/LogoMain.svg";
+import MagnifyingGlass from "../../Images/MagnifyingGlass.svg";
+import ProfileIcon from "../../Images/profileIcon.svg";
+import CartBlock from "../../Images/CartBlock.svg";
+import Credits from "../../Images/Credits.svg";
+// import { ReactComponent as LogoMain } from "../../Images/LogoMain.svg"
+
 function UserView() {
   let path = useLocation().pathname;
   const selection = "header-section-selected";
@@ -28,12 +35,12 @@ function UserView() {
       <div className="header-right-block">
         <div className="header-block-settings button-add-scale">
           <a className="header-svg-icons" href="basket.html">
-            <img src="resources/img/CartBlock.svg" alt="Cart" />
+            <img src={CartBlock} alt="Cart" />
           </a>
         </div>
         <div className="header-block-settings">
           <img
-            src="resources/img/Credits.svg"
+            src={Credits}
             alt="Credits"
             className="credits"
           />
@@ -42,7 +49,7 @@ function UserView() {
         <div className="header-block-settings button-add-scale">
           <a className="header-svg-icons" href="profile.html">
             <img
-              src="resources/img/profileIcon.svg"
+              src={ProfileIcon}
               alt="profileIcon"
               className="profile-pic"
             />
@@ -82,7 +89,7 @@ function AdminView() {
         <div className="header-block-settings button-add-scale">
           <Link to="/profile" className="header-svg-icons">
             <img
-              src="resources/img/profileIcon.svg"
+              src={ProfileIcon}
               alt="profileIcon"
               className="profile-pic"
             />
@@ -123,13 +130,13 @@ export default function Header(props) {
       <div className="header-content">
         <a href="index.html">
           <img
+            src={LogoMain}
             className="header-logo"
-            src="resources/img/LogoMain.svg"
             alt="logo"
           />
         </a>
         <div className="header-block-search">
-          <img src="resources/img/MagnifyingGlass.svg" alt="magnifyingGlass" />
+          <img src={MagnifyingGlass} alt="magnifyingGlass" />
           <input
             className="header-search"
             type="text"

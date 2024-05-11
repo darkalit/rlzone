@@ -2,12 +2,18 @@ import React from "react";
 import "./Footer.style.css";
 import { Link } from "react-router-dom";
 
+import LogoFoot from "../../Images/footLogo.svg"
+import ProductLogo from "../../Images/LogoFooter.svg"
+import Linkedin from "../../Images/Linkedin.svg"
+import Twitter from "../../Images/Twitter.svg"
+import Facebook from "../../Images/facebook.svg"
+
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-columns">
         <div className="footer-first-column">
-          <img src="resources/img/footLogo.svg" alt="logo" />
+          <img src={LogoFoot} alt="logo" />
           <p className="footer-number">+ 380(67) 246-28-32</p>
           <p className="footer-contact-email">support@rlzone.agency</p>
         </div>
@@ -45,13 +51,13 @@ export default function Footer() {
       <div className="footer-separator"></div>
       <div className="footer-bottom-block">
         <div className="footer-socials">
-          <img src="resources/img/Linkedin.svg" alt="Linkedin" />
-          <img src="resources/img/facebook.svg" alt="facebook" />
-          <img src="resources/img/Twitter.svg" alt="twitter" />
+          <a href="https://www.linkedin.com/"><img src={Linkedin} alt="Linkedin"/></a>
+          <a href="https://www.facebook.com/"><img src={Facebook} alt="facebook"/></a>
+          <a href="https://twitter.com/"><img src={Twitter} alt="twitter" /></a>
         </div>
         <div className="footer-product-logo">
           <p className="footer-text">A product of</p>
-          <img src="resources/img/LogoFooter.svg" alt="LogoFooter" />
+          <img src={ProductLogo} alt="LogoFooter" />
         </div>
         <div className="footer-copyright">
           <p className="footer-text">© 2024 RL Zone. All rights reserved</p>
