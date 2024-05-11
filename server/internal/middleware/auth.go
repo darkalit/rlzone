@@ -33,6 +33,19 @@ func (mw *MiddlewareManager) AuthJWTMiddleware(c *gin.Context) {
 		return
 	}
 
+	foundUser, err := mw.usersUC.GetById(c, payload.UserID)
+	if err != nil {
+		c.Status(http.StatusForbidden)
+		c.Abort()
+		return
+	}
+
+	if foundUser.IsBlocked {
+		c.Status(http.StatusForbidden)
+		c.Abort()
+		return
+	}
+
 	c.Set("payload", *payload)
 	c.Next()
 }
