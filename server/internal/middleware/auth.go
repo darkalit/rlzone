@@ -57,12 +57,7 @@ func (mw *MiddlewareManager) PermitAdmin(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	payload := payloadAny.(*auth.JWTPayload)
-	if payload == nil {
-		c.Status(http.StatusForbidden)
-		c.Abort()
-		return
-	}
+	payload := payloadAny.(auth.JWTPayload)
 
 	if payload.Role != string(users.RoleAdmin) {
 		c.Status(http.StatusForbidden)
