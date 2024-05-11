@@ -5,6 +5,8 @@ import (
 	"errors"
 
 	"gorm.io/gorm"
+
+	"github.com/darkalit/rlzone/server/pkg/pagination"
 )
 
 type Repository interface {
@@ -16,7 +18,7 @@ type Repository interface {
 
 	Create(ctx context.Context, user *User) error
 	Update(ctx context.Context, user *User) error
-	Get(ctx context.Context, query *GetUsersQuery) ([]User, error)
+	Get(ctx context.Context, query *GetUsersQuery) (*GetResponse, error)
 	GetById(ctx context.Context, id uint) (*User, error)
 	GetByEpicId(ctx context.Context, epicId string) (*User, error)
 	GetByEmail(ctx context.Context, email string) (*User, error)
@@ -88,8 +90,9 @@ func (r *UsersRepo) Update(ctx context.Context, user *User) error {
 	return tx.Save(&user).Error
 }
 
-func (r *UsersRepo) Get(ctx context.Context, query *GetUsersQuery) ([]User, error) {
+func (r *UsersRepo) Get(ctx context.Context, query *GetUsersQuery) (*GetResponse, error) {
 	var users []User
+	var totalCount int64
 	tx := r.db.WithContext(ctx)
 	tx = tx.Model(&User{})
 
@@ -113,6 +116,22 @@ func (r *UsersRepo) Get(ctx context.Context, query *GetUsersQuery) ([]User, erro
 			sortString = "id desc"
 		case "id_asc":
 			sortString = "id asc"
+		case "epic_id_desc":
+			sortString = "epic_id desc"
+		case "epic_id_asc":
+			sortString = "epic_id asc"
+		case "email_desc":
+			sortString = "email desc"
+		case "email_asc":
+			sortString = "email asc"
+		case "balance_desc":
+			sortString = "balance desc"
+		case "balance_asc":
+			sortString = "balance asc"
+		case "creation_desc":
+			sortString = "created_at desc"
+		case "creation_asc":
+			sortString = "created_at asc"
 		default:
 			sortString = ""
 		}
@@ -120,21 +139,26 @@ func (r *UsersRepo) Get(ctx context.Context, query *GetUsersQuery) ([]User, erro
 		tx = tx.Order(sortString)
 	}
 
-	pagesize := query.PageSize
-	if pagesize != 0 {
-		tx = tx.Limit(pagesize)
-	}
+	tx.Count(&totalCount)
 
-	if page := query.Page; page != 0 {
-		tx = tx.Offset((page - 1) * pagesize)
-	}
+	pagesize := query.PageSize
+	page := query.Page
+
+	pagination.SanitizePages(&page, &pagesize)
+	offset, limit := pagination.GetOffsetAndLimit(page, pagesize)
+
+	tx = tx.Limit(limit)
+	tx = tx.Offset(offset)
 
 	err := tx.Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return users, nil
+	return &GetResponse{
+		Users:      users,
+		Pagination: pagination.GetPagination(int64(page), int64(pagesize), totalCount),
+	}, nil
 }
 
 func (r *UsersRepo) GetById(ctx context.Context, id uint) (*User, error) {

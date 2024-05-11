@@ -17,7 +17,7 @@ type UseCase interface {
 	Login(ctx context.Context, request *LoginRequest) (*UserWithTokens, error)
 	RefreshToken(ctx context.Context, refreshToken string) (*UserWithTokens, error)
 	Logout(ctx context.Context, refreshToken string) error
-	Get(ctx context.Context, query *GetUsersQuery) ([]User, error)
+	Get(ctx context.Context, query *GetUsersQuery) (*GetResponse, error)
 	GetById(ctx context.Context, id uint) (*User, error)
 	BlockUser(ctx context.Context, id uint) error
 }
@@ -199,7 +199,7 @@ func (u *UsersUseCase) BlockUser(ctx context.Context, id uint) error {
 	return nil
 }
 
-func (u *UsersUseCase) Get(ctx context.Context, query *GetUsersQuery) ([]User, error) {
+func (u *UsersUseCase) Get(ctx context.Context, query *GetUsersQuery) (*GetResponse, error) {
 	return u.repo.Get(ctx, query)
 }
 

@@ -16,5 +16,6 @@ func MapUserRoutes(router *gin.RouterGroup, h *users.Handler, mw *middleware.Mid
 		usersRoute.GET("/logout", h.Logout)
 
 		usersRoute.GET("/block/:id", mw.AuthJWTMiddleware, mw.PermitAdmin, h.BlockUser)
+		usersRoute.GET("/", mw.AuthJWTMiddleware, mw.PermitAdmin, h.Get)
 	}
 }

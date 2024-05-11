@@ -6,6 +6,8 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"github.com/darkalit/rlzone/server/pkg/pagination"
 )
 
 type RoleType string
@@ -98,4 +100,9 @@ type RegisterRequest struct {
 type LoginRequest struct {
 	Email    string `json:"email"    binding:"required"`
 	Password string `json:"password" binding:"required"`
+}
+
+type GetResponse struct {
+	Users      []User
+	Pagination pagination.Pagination
 }

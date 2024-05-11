@@ -149,3 +149,20 @@ func (h *Handler) BlockUser(c *gin.Context) {
 
 	c.Status(http.StatusNoContent)
 }
+
+func (h *Handler) Get(c *gin.Context) {
+	query := GetUsersQuery{}
+	err := c.ShouldBindQuery(&query)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	response, err := h.useCase.Get(c, &query)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
