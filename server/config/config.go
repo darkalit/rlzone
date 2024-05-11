@@ -22,8 +22,10 @@ type Config struct {
 	RefreshTokenSecret     string `mapstructure:"REFRESH_TOKEN_SECRET"`
 	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
 
+	TokenIssuer string `mapstructure:"TOKEN_ISSUER"`
+
 	AuthCookieName     string `mapstructure:"AUTH_COOKIE_NAME"`
-	AuthCookieMaxAge   string `mapstructure:"AUTH_COOKIE_MAX_AGE"`
+	AuthCookieMaxAge   int    `mapstructure:"AUTH_COOKIE_MAX_AGE"`
 	AuthCookieSecure   bool   `mapstructure:"AUTH_COOKIE_SECURE"`
 	AuthCookieHttpOnly bool   `mapstructure:"AUTH_COOKIE_HTTP_ONLY"`
 }
