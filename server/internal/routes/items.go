@@ -12,5 +12,7 @@ func MapItemRoutes(router *gin.RouterGroup, h *items.Handler, mw *middleware.Mid
 	{
 		itemsRoute.GET("", h.Get)
 		itemsRoute.GET(":id", h.GetById)
+
+		itemsRoute.POST("/stocks", mw.AuthJWTMiddleware, mw.PermitAdmin, h.CreateStock)
 	}
 }
