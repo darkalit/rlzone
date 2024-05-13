@@ -29,6 +29,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	itemsHandler := items.NewHandler(s.config, itemsUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
+	v1.Use(mw.CorsMiddleware)
 	routes.MapHealthRoutes(v1, healthHandler)
 	routes.MapUserRoutes(v1, usersHandler, mw)
 	routes.MapItemRoutes(v1, itemsHandler, mw)
