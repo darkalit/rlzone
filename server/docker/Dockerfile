@@ -7,7 +7,7 @@ WORKDIR /app
 ADD go.mod .
 ADD go.sum .
 
-RUN go mod downlad
+RUN go mod download
 ADD . .
 
 RUN go get github.com/githubnemo/CompileDaemon
