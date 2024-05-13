@@ -3,9 +3,11 @@ package users
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 
+	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/pkg/pagination"
 )
 
@@ -25,29 +27,34 @@ type Repository interface {
 }
 
 type UsersRepo struct {
-	db *gorm.DB
+	cfg *config.Config
+	db  *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) *UsersRepo {
+func NewUserRepository(cfg *config.Config, db *gorm.DB) *UsersRepo {
 	return &UsersRepo{
-		db: db,
+		cfg: cfg,
+		db:  db,
 	}
 }
 
 func (r *UsersRepo) CreateToken(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	return tx.Create(token).Error
 }
 
 func (r *UsersRepo) UpdateToken(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	return tx.Save(token).Error
 }
 
 func (r *UsersRepo) CreateOrUpdate(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	err := tx.First(token, "user_id = ?", token.UserID).Error
 	if err != nil {
@@ -64,6 +71,7 @@ func (r *UsersRepo) CreateOrUpdate(ctx context.Context, token *Token) error {
 func (r *UsersRepo) GetTokenByUserId(ctx context.Context, userId uint) (*Token, error) {
 	var token Token
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	err := tx.First(&token, "user_id = ?", userId).Error
 	if err != nil {
@@ -74,18 +82,21 @@ func (r *UsersRepo) GetTokenByUserId(ctx context.Context, userId uint) (*Token, 
 
 func (r *UsersRepo) DeleteTokenByUserId(ctx context.Context, userId uint) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	return tx.Delete(&Token{}, "user_id = ?", userId).Error
 }
 
 func (r *UsersRepo) Create(ctx context.Context, user *User) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	return tx.Create(user).Error
 }
 
 func (r *UsersRepo) Update(ctx context.Context, user *User) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	return tx.Save(&user).Error
 }
@@ -94,6 +105,7 @@ func (r *UsersRepo) Get(ctx context.Context, query *GetUsersQuery) (*GetResponse
 	var users []User
 	var totalCount int64
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	tx = tx.Model(&User{})
 
 	if id := query.ID; id != 0 {
@@ -165,6 +177,7 @@ func (r *UsersRepo) GetById(ctx context.Context, id uint) (*User, error) {
 	var user User
 
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	err := tx.First(&user, id).Error
 	if err != nil {
 		return nil, err
@@ -176,6 +189,7 @@ func (r *UsersRepo) GetByEpicId(ctx context.Context, epicId string) (*User, erro
 	var user User
 
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	epicId = "%" + epicId + "%"
 	err := tx.Where("epic_id LIKE ?", epicId).Take(&user).Error
 	if err != nil {
@@ -188,6 +202,7 @@ func (r *UsersRepo) GetByEmail(ctx context.Context, email string) (*User, error)
 	var user User
 
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	err := tx.First(&user, "email = ?", email).Error
 	if err != nil {
 		return nil, err

@@ -20,11 +20,11 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 
 	healthHandler := health.NewHandler()
 
-	usersRepo := users.NewUserRepository(s.db)
+	usersRepo := users.NewUserRepository(s.config, s.db)
 	usersUseCase := users.NewUserUseCase(usersRepo, s.config)
 	usersHandler := users.NewHandler(s.config, usersUseCase)
 
-	itemsRepo := items.NewItemRepository(s.db)
+	itemsRepo := items.NewItemRepository(s.config, s.db)
 	itemsUseCase := items.NewItemUseCase(itemsRepo)
 	itemsHandler := items.NewHandler(s.config, itemsUseCase)
 

@@ -2,9 +2,11 @@ package items
 
 import (
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 
+	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/pkg/pagination"
 )
 
@@ -17,17 +19,20 @@ type Repository interface {
 }
 
 type ItemsRepo struct {
-	db *gorm.DB
+	cfg *config.Config
+	db  *gorm.DB
 }
 
-func NewItemRepository(db *gorm.DB) *ItemsRepo {
+func NewItemRepository(cfg *config.Config, db *gorm.DB) *ItemsRepo {
 	return &ItemsRepo{
-		db: db,
+		cfg: cfg,
+		db:  db,
 	}
 }
 
 func (r *ItemsRepo) Create(ctx context.Context, item *Item) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	err := tx.Create(item).Error
 	if err != nil {
@@ -41,6 +46,7 @@ func (r *ItemsRepo) Get(ctx context.Context, query *GetItemsQuery) (*GetResponse
 	var totalCount int64
 	var items []Item
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	tx = tx.Model(&Item{}).Preload("Stock")
 
 	if id := query.ID; id != 0 {
@@ -95,6 +101,7 @@ func (r *ItemsRepo) GetById(ctx context.Context, id uint) (*Item, error) {
 	var item Item
 
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 	err := tx.Preload("Stock").First(&item, id).Error
 	if err != nil {
 		return nil, err
@@ -104,6 +111,7 @@ func (r *ItemsRepo) GetById(ctx context.Context, id uint) (*Item, error) {
 
 func (r *ItemsRepo) CreateStock(ctx context.Context, stock *Stock) error {
 	tx := r.db.WithContext(ctx)
+	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
 
 	err := tx.Create(stock).Error
 	if err != nil {
