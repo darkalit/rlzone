@@ -37,28 +37,28 @@ func NewUserRepository(db *gorm.DB) *UsersRepo {
 func (r *UsersRepo) CreateToken(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
 
-	return tx.Create(&token).Error
+	return tx.Create(token).Error
 }
 
 func (r *UsersRepo) UpdateToken(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
 
-	return tx.Save(&token).Error
+	return tx.Save(token).Error
 }
 
 func (r *UsersRepo) CreateOrUpdate(ctx context.Context, token *Token) error {
 	tx := r.db.WithContext(ctx)
 
-	err := tx.First(&token, "user_id = ?", token.UserID).Error
+	err := tx.First(token, "user_id = ?", token.UserID).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return tx.Create(&token).Error
+			return tx.Create(token).Error
 		}
 
 		return err
 	}
 
-	return tx.Save(&token).Error
+	return tx.Save(token).Error
 }
 
 func (r *UsersRepo) GetTokenByUserId(ctx context.Context, userId uint) (*Token, error) {
@@ -81,7 +81,7 @@ func (r *UsersRepo) DeleteTokenByUserId(ctx context.Context, userId uint) error 
 func (r *UsersRepo) Create(ctx context.Context, user *User) error {
 	tx := r.db.WithContext(ctx)
 
-	return tx.Create(&user).Error
+	return tx.Create(user).Error
 }
 
 func (r *UsersRepo) Update(ctx context.Context, user *User) error {
