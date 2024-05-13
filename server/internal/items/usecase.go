@@ -3,8 +3,9 @@ package items
 import "context"
 
 type UseCase interface {
-	Get(ctx context.Context, query *GetItemQuery) ([]Item, error)
+	Get(ctx context.Context, query *GetItemsQuery) (*GetResponse, error)
 	GetById(ctx context.Context, id uint) (*Item, error)
+	CreateStock(ctx context.Context, createStockRequest *CreateStockRequest) (*Stock, error)
 }
 
 type ItemsUseCase struct {
@@ -17,10 +18,28 @@ func NewItemUseCase(itemsRepo Repository) *ItemsUseCase {
 	}
 }
 
-func (u *ItemsUseCase) Get(ctx context.Context, query *GetItemQuery) ([]Item, error) {
+func (u *ItemsUseCase) Get(ctx context.Context, query *GetItemsQuery) (*GetResponse, error) {
 	return u.repo.Get(ctx, query)
 }
 
 func (u *ItemsUseCase) GetById(ctx context.Context, id uint) (*Item, error) {
 	return u.repo.GetById(ctx, id)
+}
+
+func (u *ItemsUseCase) CreateStock(
+	ctx context.Context,
+	createStockRequest *CreateStockRequest,
+) (*Stock, error) {
+	createdStock := Stock{
+		Price:       createStockRequest.Price,
+		Description: createStockRequest.Description,
+		ItemID:      createStockRequest.ItemID,
+	}
+
+	err := u.repo.CreateStock(ctx, &createdStock)
+	if err != nil {
+		return nil, err
+	}
+
+	return &createdStock, nil
 }

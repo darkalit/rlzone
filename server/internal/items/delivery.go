@@ -1,6 +1,7 @@
 package items
 
 import (
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,22 +23,20 @@ func NewHandler(cfg *config.Config, useCase UseCase) *Handler {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	query := GetItemQuery{}
+	query := GetItemsQuery{}
 	err := c.ShouldBindQuery(&query)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
 
-	items, err := h.useCase.Get(c.Request.Context(), &query)
+	itemsResponse, err := h.useCase.Get(c.Request.Context(), &query)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": items,
-	})
+	c.JSON(http.StatusOK, itemsResponse)
 }
 
 func (h *Handler) GetById(c *gin.Context) {
@@ -54,5 +53,22 @@ func (h *Handler) GetById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, fullItem)
+	c.JSON(http.StatusOK, fullItem)
+}
+
+func (h *Handler) CreateStock(c *gin.Context) {
+	var createStockRequest CreateStockRequest
+	err := c.ShouldBindJSON(&createStockRequest)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	createdStock, err := h.useCase.CreateStock(c, &createStockRequest)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, createdStock)
 }
