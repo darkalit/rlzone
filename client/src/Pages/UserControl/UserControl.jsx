@@ -6,13 +6,73 @@ import Button, { ButtonType } from "../../UI/Button/Button";
 import MagnifyingGlass from "../../Images/MagnifyingGlass.svg";
 import UserPhoto from "../../Images/userPhoto.svg";
 import Credits from "../../Images/Credits.svg";
+import { ArrayTable, ObjectTable } from "../../UI";
 
 export default function UserControl() {
-  // const styles = {
-  //   background: "red",
-  //   height: "100px",
-  //   width: "100px",
-  // };
+  const obj = {
+    ID: 35,
+    Name: "Honda Civic Type R",
+    Type: "Body",
+    Quality: "Limited",
+    Hitbox: "Octane",
+    Reactive: false,
+    TradeIn: false,
+    Paintable: true,
+    Blueprints: false,
+    Released: "7th September 2022",
+    Platform: "All",
+    Sideswipe: "Not available",
+    Series: "-",
+  };
+
+  const head = {
+    ID: function () {
+      console.log("1");
+    },
+    Username: function () {
+      console.log("2");
+    },
+    Email: function () {
+      console.log("3");
+    },
+    Credits: function () {
+      console.log("4");
+    },
+    "Creation date": function () {
+      console.log("5");
+    },
+  };
+
+  const users = [
+    {
+      ID: 1,
+      Name: "Armadillo",
+      Email: "examplemail@gmail.com",
+      Credits: false,
+      Created: "17th February 2016",
+    },
+    {
+      ID: 2,
+      Name: "Armadillo",
+      Email: "examplemail@gmail.com",
+      Credits: false,
+      Created: "17th February 2016",
+    },
+    {
+      ID: 3,
+      Name: "Armadillo",
+      Email: "examplemail@gmail.com",
+      Credits: false,
+      Created: "17th February 2016",
+    },
+    {
+      ID: 4,
+      Name: "Armadillo",
+      Email: "examplemail@gmail.com",
+      Credits: false,
+      Created: "17th February 2016",
+    },
+  ];
 
   return (
     <>
@@ -20,10 +80,7 @@ export default function UserControl() {
         <div className="main-content">
           <div className="main-content-block-search">
             <div className="main-content-block-searchbar">
-              <img
-                src={MagnifyingGlass}
-                alt="magnifyingGlass"
-              />
+              <img src={MagnifyingGlass} alt="magnifyingGlass" />
               <input
                 className="header-search"
                 type="text"
@@ -37,126 +94,15 @@ export default function UserControl() {
           <div className="main-content-block-main">
             <div className="main-content-block">
               <div className="main-description-table grey-container">
-                <table className="main-table">
-                  <thead>
-                    <tr>
-                      <th className="table-top-row">ID</th>
-                      <th className="table-top-row">Username</th>
-                      <th className="table-top-row">Email</th>
-                      <th className="table-top-row">Credits</th>
-                      <th className="top-right-row table-top-row">
-                        Creation date
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="table-left-column">1</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>10</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">2</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>20</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">3</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">4</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">5</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">6</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">7</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">8</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">9</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">10</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">11</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">12</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">13</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">14</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                    <tr>
-                      <td className="table-left-column">15</td>
-                      <td>ExampleUserName</td>
-                      <td>examplemail@gmail.com</td>
-                      <td>15</td>
-                      <td>2024-03-28</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <ArrayTable
+                  data={users}
+                  // side={side}
+                  head={head}
+                  className="main-table"
+                />
+              </div>
+              <div className="main-description-table grey-container">
+                <ObjectTable data={obj} />
               </div>
             </div>
             <div className="main-content-sidebar">
@@ -175,7 +121,7 @@ export default function UserControl() {
                     <img
                       src={Credits}
                       alt="credits"
-                      style={{width: "20px; height: 20px"}}
+                      style={{ width: "20px; height: 20px" }}
                     />
                     <p className="main-text">1488</p>
                   </div>
@@ -184,8 +130,8 @@ export default function UserControl() {
                     <p className="main-text">2024-03-28 16:38:11</p>
                   </div>
                 </div>
-                <div className="btn-block" style={{marginTop: "64px"}}> 
-                  <Button text="Ban user" type={ButtonType.Outline} border-color="var(--misc-failure)" />
+                <div className="btn-block" style={{ marginTop: "64px" }}>
+                  <Button text="Ban user" type={ButtonType.Ban} />
                 </div>
               </div>
             </div>

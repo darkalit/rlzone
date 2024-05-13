@@ -12,6 +12,7 @@ import Credits from "../../Images/Credits.svg";
 
 function UserView() {
   let path = useLocation().pathname;
+  console.log(path);
   const selection = "header-section-selected";
 
   return (
@@ -110,6 +111,17 @@ function GuestView() {
   );
 }
 
+function AuthView() {
+  return (
+    <img
+      src={LogoMain}
+      className="header-logo"
+      alt="logo"
+      style={{margin: "0 auto"}}
+    />
+  );
+}
+
 export default function Header(props) {
   let view = null;
 
@@ -119,6 +131,9 @@ export default function Header(props) {
       break;
     case "Admin":
       view = AdminView();
+      break;
+    case "Auth":
+      view = AuthView();
       break;
     default:
       view = GuestView();
