@@ -1,0 +1,151 @@
+.main-content-sidebar {
+  .card {
+    position: relative;
+    border-radius: 16px;
+    padding: 38px 38px 64px 38px;
+    width: 340px;
+    height: fit-content;
+  }
+
+  .credit-block {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .car-name {
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 32px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 100%;
+    color: var(--text-main);
+  }
+
+  .credit-block-price {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .price-text {
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--text-main);
+  }
+
+  .btn-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .change-btn {
+    margin-top: 16px;
+    cursor: pointer;
+    border-radius: 16px;
+    padding: 8px 16px;
+    height: 39px;
+  }
+
+  .main-button-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    gap: 16px;
+    padding-top: 48px;
+  }
+
+  .main-description-table {
+    position: relative;
+  }
+
+  .main-table {
+    position: relative;
+    border-collapse: collapse;
+    /* width: 100%; */
+    width: 879px;
+    height: fit-content;
+  }
+
+  .main-block-description {
+    position: relative;
+    width: 932px;
+    height: fit-content;
+    padding: 26px 24px 36px 24px;
+  }
+
+  .accent-text {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 100%;
+    color: var(--text-main);
+  }
+
+  .block-description-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .description-input {
+    margin-top: 10px;
+    width: 100%;
+    height: 80px;
+    padding: 8px 12px;
+    color: var(--text-main);
+    font-weight: 400;
+    font-size: 16px;
+    resize: none;
+    background: var(--bg-secondary-shade);
+  }
+
+  .btn-glow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .description-text {
+    font-weight: 400;
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: auto;
+    color: var(--text-main);
+  }
+
+  .btn-change-description {
+    margin-left: 16px;
+  }
+
+  .main-user-photo {
+    border-radius: 16px;
+    fill: var(--bg-secondary-shade);
+    border: 2px solid var(--text-main);
+    padding: 32px;
+  }
+
+  .user-info-block {
+    margin-top: 32px;
+  }
+
+  .info-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+    gap: 8px;
+  }
+}

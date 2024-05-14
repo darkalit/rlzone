@@ -40,20 +40,12 @@ function UserView() {
           </a>
         </div>
         <div className="header-block-settings">
-          <img
-            src={Credits}
-            alt="Credits"
-            className="credits"
-          />
+          <img src={Credits} alt="Credits" className="credits" />
           <p className="header-main-text">1290</p>
         </div>
         <div className="header-block-settings button-add-scale">
           <a className="header-svg-icons" href="profile.html">
-            <img
-              src={ProfileIcon}
-              alt="profileIcon"
-              className="profile-pic"
-            />
+            <img src={ProfileIcon} alt="profileIcon" className="profile-pic" />
           </a>
           <a href="profile.html">
             <p className="header-main-text">SampleName</p>
@@ -89,11 +81,7 @@ function AdminView() {
       <div className="header-right-block">
         <div className="header-block-settings button-add-scale">
           <Link to="/profile" className="header-svg-icons">
-            <img
-              src={ProfileIcon}
-              alt="profileIcon"
-              className="profile-pic"
-            />
+            <img src={ProfileIcon} alt="profileIcon" className="profile-pic" />
           </Link>
           <p className="header-main-text">AdminUser</p>
         </div>
@@ -117,50 +105,55 @@ function AuthView() {
       src={LogoMain}
       className="header-logo"
       alt="logo"
-      style={{margin: "0 auto"}}
+      style={{ margin: "0 auto" }}
     />
   );
 }
 
-export default function Header(props) {
+export default function Header({ role }) {
   let view = null;
 
-  switch (props.role) {
-    case "User":
+  switch (role) {
+    case "user":
       view = UserView();
       break;
-    case "Admin":
+    case "admin":
       view = AdminView();
-      break;
-    case "Auth":
-      view = AuthView();
       break;
     default:
       view = GuestView();
       break;
   }
 
+  let isAuthView = false;
+  let currentPage = useLocation().pathname;
+  if (currentPage === "/register" || currentPage === "/login") {
+    view = AuthView();
+    isAuthView = true;
+  }
+
   return (
     <header className="header">
       <div className="header-content">
-        <a href="index.html">
-          <img
-            src={LogoMain}
-            className="header-logo"
-            alt="logo"
-          />
-        </a>
-        <div className="header-block-search">
-          <img src={MagnifyingGlass} alt="magnifyingGlass" />
-          <input
-            className="header-search"
-            type="text"
-            placeholder="Find an item..."
-          />
-          <button type="button" className="header-search-button">
-            ➜
-          </button>
-        </div>
+        {!isAuthView && (
+          <>
+            <a href="index.html">
+              <img src={LogoMain} className="header-logo" alt="logo" />
+            </a>
+            <div className="header-block-search">
+              <img src={MagnifyingGlass} alt="magnifyingGlass" />
+              <input
+                className="header-search"
+                type="text"
+                placeholder="Find an item..."
+              />
+              <button type="button" className="header-search-button">
+                ➜
+              </button>
+            </div>
+          </>
+        )}
+
         {view}
       </div>
     </header>

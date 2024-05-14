@@ -1,7 +1,7 @@
 import React from "react";
 import "./ArrayTable.style.css";
 
-export default function ArrayTable({ head, side, data }) {
+export default function ArrayTable({ head, side, data, clickHandler }) {
   let thead = null;
   if (head) {
     thead = (
@@ -22,7 +22,7 @@ export default function ArrayTable({ head, side, data }) {
       {thead}
       <tbody>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
+          <tr key={rowIndex} onClick={clickHandler(rowIndex)}>
             {/* Conditional rendering for side column */}
             {side &&
               side[rowIndex] &&

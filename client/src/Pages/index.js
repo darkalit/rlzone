@@ -1,4 +1,4 @@
 import UserControl from "./UserControl/UserControl";
-import Registration from "./Registration/Registration";
+import Register from "./Register/Register";
 
-export { UserControl, Registration };
+export { UserControl, Register };
