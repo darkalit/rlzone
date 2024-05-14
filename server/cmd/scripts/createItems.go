@@ -2,9 +2,11 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
-	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/darkalit/rlzone/server/config"
@@ -52,7 +54,7 @@ func main() {
 	}
 
 	ctx := context.TODO()
-	itemRepo := items.NewItemRepository(db)
+	itemRepo := items.NewItemRepository(cfg, db)
 
 	for _, val := range itemsArray {
 		switch val.Type {
@@ -77,8 +79,25 @@ func main() {
 				paintable = t
 			}
 
+			res, err := http.Get(val.Image)
+			if err != nil {
+				log.Print(err)
+				continue
+			}
+			defer res.Body.Close()
+
+			imageData, err := io.ReadAll(res.Body)
+			if err != nil {
+				log.Print(err)
+				continue
+			}
+
+			img64 := base64.StdEncoding.EncodeToString(imageData)
+			img64 = "data:" + res.Header.Get("content-type") + ";base64," + img64
+
 			item := items.Item{
 				Name:       val.Name,
+				Image:      img64,
 				Type:       val.Type,
 				Quality:    val.Quality,
 				Hitbox:     val.Hitbox,
@@ -92,7 +111,7 @@ func main() {
 				Series:     val.Series,
 			}
 
-			fmt.Printf("%+v \n\n", item)
+			// fmt.Printf("%+v \n\n", item)
 			itemRepo.Create(ctx, &item)
 			break
 		default:
