@@ -5,6 +5,7 @@ import "github.com/darkalit/rlzone/server/pkg/pagination"
 type Item struct {
 	ID         uint    `gorm:"column:id;primaryKey"`
 	Name       string  `gorm:"column:name"`
+	Image      string  `gorm:"column:image"`
 	Type       string  `gorm:"column:type"`
 	Quality    string  `gorm:"column:quality"`
 	Hitbox     *string `gorm:"column:hitbox"        json:",omitempty"`
