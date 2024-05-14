@@ -3,7 +3,13 @@ import UserPhoto from "../../Images/userPhoto.svg";
 import Credits from "../../Images/Credits.svg";
 import Button, { ButtonType } from "../Button/Button";
 
-export default function UserCard({ username, email, credits, date }) {
+export default function UserCard({
+  username,
+  email,
+  credits,
+  date,
+  onBanClick,
+}) {
   return (
     <div className="main-content-sidebar">
       <div className="card grey-container">
@@ -31,7 +37,7 @@ export default function UserCard({ username, email, credits, date }) {
           </div>
         </div>
         <div className="btn-block" style={{ marginTop: "64px" }}>
-          <Button text="Ban user" type={ButtonType.Ban} onClick={null} />
+          <Button text="Ban user" type={ButtonType.Ban} onClick={onBanClick} />
         </div>
       </div>
     </div>

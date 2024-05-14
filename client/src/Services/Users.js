@@ -81,10 +81,16 @@ export function GetUsers() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${GetStorageAccessToken()}`,
     },
     mode: "cors",
   }).then((res) => {
     return res.json();
+  });
+}
+
+export function BlockUser(id) {
+  return fetch(apiUrl + "/block/" + id, {
+    method: "GET",
+    mode: "cors",
   });
 }

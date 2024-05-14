@@ -9,7 +9,14 @@ export const ButtonType = Object.freeze({
   Ban: "ban",
 });
 
-export default function Button({ pv = "8px", ph = "24px", width, type, text }) {
+export default function Button({
+  pv = "8px",
+  ph = "24px",
+  width,
+  type,
+  text,
+  onClick,
+}) {
   const style = {
     padding: `${pv} ${ph}`,
     whiteSpace: "nowrap",
@@ -42,7 +49,7 @@ export default function Button({ pv = "8px", ph = "24px", width, type, text }) {
   }
 
   return (
-    <button className={typeClass} style={style}>
+    <button className={typeClass} style={style} onClick={onClick}>
       {text}
     </button>
   );

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./UserControl.style.css";
 import "../../UI/GreyContainer/GreyContainer.style.css";
 import MagnifyingGlass from "../../Images/MagnifyingGlass.svg";
 import { ArrayTable, UserCard } from "../../UI";
-import { GetUsers } from "../../Services/Users";
+import { BlockUser, GetUsers } from "../../Services/Users";
 
 export default function UserControl() {
   const head = {
@@ -31,18 +31,18 @@ export default function UserControl() {
   };
 
   const [users, setUsers] = useState([]);
+  const [reload, setReload] = useState();
   useEffect(() => {
     (async function () {
       const data = (await GetUsers())?.Users;
+      data.forEach((u) => {
+        delete u["ProfilePicture"];
+        delete u["UpdatedAt"];
+        u["IsBlocked"] = u["IsBlocked"] ? "Yes" : "No";
+      });
       setUsers(data);
     })();
-  }, []);
-
-  users.forEach((u) => {
-    delete u["ProfilePicture"];
-    delete u["UpdatedAt"];
-    u["IsBlocked"] = u["IsBlocked"] ? "No" : "Yes";
-  });
+  }, [reload]);
 
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -51,6 +51,12 @@ export default function UserControl() {
       setSelectedUser(users[index]);
     };
   };
+
+  const onBan = useCallback(async () => {
+    setReload(!reload);
+    await BlockUser(selectedUser.ID);
+    selectedUser.IsBlocked = true;
+  }, [selectedUser, reload]);
 
   return (
     <div className="user-control-page">
@@ -90,6 +96,7 @@ export default function UserControl() {
                 email={selectedUser.Email}
                 credits={selectedUser.Balance}
                 date={selectedUser.CreatedAt}
+                onBanClick={onBan}
               />
             ) : null}
           </div>

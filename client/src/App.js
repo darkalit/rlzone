@@ -1,11 +1,10 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { Footer, Header } from "./Components";
-import { UserControl, Register } from "./Pages";
+import { UserControl, Register, ViewItem } from "./Pages";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { GetStorageAccessToken, GetStorageUser, Login } from "./Services/Users";
-import { GetItems } from "./Services/Items";
 
 axios.interceptors.request.use(
   (req) => {
@@ -35,8 +34,9 @@ export default function App() {
       <Header role={user?.Role} />
 
       <Routes>
-        <Route exact path="/" element={<UserControl />} />
+        <Route exact path="/users" element={<UserControl />} />
         <Route exact path="/register" element={<Register />} />
+        <Route exact path="/items/:id" element={<ViewItem />} />
       </Routes>
       <Footer />
     </>
