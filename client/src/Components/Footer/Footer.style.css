@@ -20,6 +20,7 @@
 }
 
 footer {
+  position: relative;
   padding: 110px 176px;
   height: 490px;
   background: var(--bg-main);

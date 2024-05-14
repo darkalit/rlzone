@@ -30,6 +30,10 @@ th {
   border-top: none;
 }
 
+tr {
+  cursor: pointer;
+}
+
 thead {
   border-radius: 16px;
   background: var(--bg-secondary);
