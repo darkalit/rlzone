@@ -1,5 +1,7 @@
 package items
 
+import "github.com/darkalit/rlzone/server/pkg/pagination"
+
 type Item struct {
 	ID         uint    `gorm:"column:id;primaryKey"`
 	Name       string  `gorm:"column:name"`
@@ -24,7 +26,7 @@ type Stock struct {
 	ItemID      uint   `gorm:"column:item_id"`
 }
 
-type GetItemQuery struct {
+type GetItemsQuery struct {
 	ID          uint   `json:"id"            form:"id"`
 	Sort        string `json:"sort"          form:"sort"`
 	MinPrice    uint   `json:"min_price"     form:"min_price"`
@@ -34,4 +36,15 @@ type GetItemQuery struct {
 	Quality     string `json:"quality"       form:"quality"`
 	Page        int    `json:"page"          form:"page"`
 	PageSize    int    `json:"page_size"     form:"page_size"`
+}
+
+type GetResponse struct {
+	Items      []Item
+	Pagination pagination.Pagination
+}
+
+type CreateStockRequest struct {
+	Price       uint   `json:"price"       binding:"required"`
+	Description string `json:"description" binding:"required"`
+	ItemID      uint   `json:"item_id"     binding:"required"`
 }
