@@ -1,13 +1,12 @@
-package routes
+package rest
 
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/darkalit/rlzone/server/internal/items"
 	"github.com/darkalit/rlzone/server/internal/middleware"
 )
 
-func MapItemRoutes(router *gin.RouterGroup, h *items.Handler, mw *middleware.MiddlewareManager) {
+func MapItemRoutes(router *gin.RouterGroup, h *Handler, mw *middleware.MiddlewareManager) {
 	itemsRoute := router.Group("/items")
 	{
 		itemsRoute.GET("", h.Get)

@@ -1,4 +1,4 @@
-package items
+package rest
 
 import (
 	"net/http"
@@ -7,15 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/darkalit/rlzone/server/config"
+	"github.com/darkalit/rlzone/server/internal/items"
 	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
 
 type Handler struct {
 	cfg     *config.Config
-	useCase UseCase
+	useCase items.UseCase
 }
 
-func NewHandler(cfg *config.Config, useCase UseCase) *Handler {
+func NewHandler(cfg *config.Config, useCase items.UseCase) *Handler {
 	return &Handler{
 		cfg:     cfg,
 		useCase: useCase,
@@ -23,7 +24,7 @@ func NewHandler(cfg *config.Config, useCase UseCase) *Handler {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	query := GetItemsQuery{}
+	query := items.GetItemsQuery{}
 	err := c.ShouldBindQuery(&query)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
@@ -57,7 +58,7 @@ func (h *Handler) GetById(c *gin.Context) {
 }
 
 func (h *Handler) CreateStock(c *gin.Context) {
-	var createStockRequest CreateStockRequest
+	var createStockRequest items.CreateStockRequest
 	err := c.ShouldBindJSON(&createStockRequest)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))

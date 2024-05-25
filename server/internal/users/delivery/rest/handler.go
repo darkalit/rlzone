@@ -1,4 +1,4 @@
-package users
+package rest
 
 import (
 	"net/http"
@@ -7,15 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/darkalit/rlzone/server/config"
+	"github.com/darkalit/rlzone/server/internal/users"
 	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
 
 type Handler struct {
 	cfg     *config.Config
-	useCase UseCase
+	useCase users.UseCase
 }
 
-func NewHandler(cfg *config.Config, useCase UseCase) *Handler {
+func NewHandler(cfg *config.Config, useCase users.UseCase) *Handler {
 	return &Handler{
 		cfg:     cfg,
 		useCase: useCase,
@@ -23,7 +24,7 @@ func NewHandler(cfg *config.Config, useCase UseCase) *Handler {
 }
 
 func (h *Handler) Register(c *gin.Context) {
-	var registerRequest RegisterRequest
+	var registerRequest users.RegisterRequest
 
 	err := c.ShouldBindJSON(&registerRequest)
 	if err != nil {
@@ -51,7 +52,7 @@ func (h *Handler) Register(c *gin.Context) {
 }
 
 func (h *Handler) Login(c *gin.Context) {
-	var loginRequest LoginRequest
+	var loginRequest users.LoginRequest
 
 	err := c.ShouldBindJSON(&loginRequest)
 	if err != nil {
@@ -151,7 +152,7 @@ func (h *Handler) BlockUser(c *gin.Context) {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	query := GetUsersQuery{}
+	query := users.GetUsersQuery{}
 	err := c.ShouldBindQuery(&query)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))

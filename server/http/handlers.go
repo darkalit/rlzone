@@ -1,14 +1,15 @@
-package rest
+package http
 
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"github.com/darkalit/rlzone/server/internal/health"
+	restHealth "github.com/darkalit/rlzone/server/internal/health/delivery/rest"
 	"github.com/darkalit/rlzone/server/internal/items"
+	restItems "github.com/darkalit/rlzone/server/internal/items/delivery/rest"
 	"github.com/darkalit/rlzone/server/internal/middleware"
-	"github.com/darkalit/rlzone/server/internal/routes"
 	"github.com/darkalit/rlzone/server/internal/users"
+	restUsers "github.com/darkalit/rlzone/server/internal/users/delivery/rest"
 )
 
 func (s *Server) MapHandlers(e *gin.Engine) error {
@@ -26,20 +27,20 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 
 	v1 := e.Group("/api/v1")
 
-	healthHandler := health.NewHandler()
+	healthHandler := restHealth.NewHandler()
 
 	usersRepo := users.NewUserRepository(s.config, s.db)
 	usersUseCase := users.NewUserUseCase(usersRepo, s.config)
-	usersHandler := users.NewHandler(s.config, usersUseCase)
+	usersHandler := restUsers.NewHandler(s.config, usersUseCase)
 
 	itemsRepo := items.NewItemRepository(s.config, s.db)
 	itemsUseCase := items.NewItemUseCase(itemsRepo)
-	itemsHandler := items.NewHandler(s.config, itemsUseCase)
+	itemsHandler := restItems.NewHandler(s.config, itemsUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
-	routes.MapHealthRoutes(v1, healthHandler)
-	routes.MapUserRoutes(v1, usersHandler, mw)
-	routes.MapItemRoutes(v1, itemsHandler, mw)
+	restHealth.MapHealthRoutes(v1, healthHandler)
+	restUsers.MapUserRoutes(v1, usersHandler, mw)
+	restItems.MapItemRoutes(v1, itemsHandler, mw)
 
 	return nil
 }
