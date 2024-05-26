@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -153,7 +153,7 @@
           </div>
 
           <div class="main-content-block-items">
-            {{range .items}} {{template "item-card-view.html"}} {{end}}
+            {{range .items}} {{template "item-card-view.html" .}} {{end}}
           </div>
 
           <div class="main-content-block-pages">
