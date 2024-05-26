@@ -35,7 +35,12 @@ func (h *Handler) Get(c *gin.Context) {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
+	query.Page = int(itemsResponse.Pagination.Page)
+	query.PageSize = int(itemsResponse.Pagination.Size)
+
 	c.HTML(http.StatusOK, "items.html", gin.H{
-		"items": itemsResponse.Items,
+		"items":      itemsResponse.Items,
+		"query":      query,
+		"pagination": itemsResponse.Pagination,
 	})
 }

@@ -21,7 +21,7 @@
     {{template "header-guest.html"}}
 
     <main class="main">
-      <div class="main-content">
+      <form class="main-content">
         <div
           class="main-content-sidebar"
           style="width: 340px; padding: 16px 36px 0px 36px"
@@ -40,14 +40,31 @@
             <h2 class="accent-text">Filter</h2>
             <p class="subtext">Item quality</p>
             <div class="select">
-              <select>
-                <option>Common</option>
-                <option>Uncommon</option>
-                <option>Rare</option>
-                <option>Very Rare</option>
-                <option>Import</option>
-                <option>Exotic</option>
-                <option>Black Market</option>
+              <select name="quality" id="qualitySelection">
+                <option value="">All</option>
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Limited">Limited</option>
+                <option value="Rare">Rare</option>
+                <option value="Very Rare">Very Rare</option>
+                <option value="Import">Import</option>
+                <option value="Exotic">Exotic</option>
+                <option value="Black Market">Black Market</option>
+                <option value="Premium">Premium</option>
+                <option value="Legacy">Legacy</option>
+              </select>
+            </div>
+            <p class="subtext">Item Type</p>
+            <div class="select">
+              <select name="type" id="typeSelection">
+                <option value="">All</option>
+                <option value="Body">Bodies</option>
+                <option value="Decal">Decals</option>
+                <option value="Wheels">Wheels</option>
+                <option value="Rocket Boost">Boosts</option>
+                <option value="Antenna">Antennas</option>
+                <option value="Goal Explosion">Goal Explosions</option>
+                <option value="Trail">Trails</option>
               </select>
             </div>
             <div class="price-range">
@@ -56,6 +73,7 @@
                 <input
                   class="number-input-block number-input-block-from"
                   type="number"
+                  name="min_price"
                   placeholder="0"
                 />
               </div>
@@ -64,6 +82,7 @@
                 <input
                   class="number-input-block number-input-block-to"
                   type="number"
+                  name="max_price"
                   placeholder="100000"
                 />
               </div>
@@ -74,8 +93,20 @@
           </div>
           <div class="checkbox-out-of-stock">
             <label class="main-label main-text">
-              <input type="checkbox" />
-              <span class="grey-container main-checkmark"></span>
+              <input
+                type="checkbox"
+                name="only_in_stock"
+                value="true"
+                {{
+                if
+                .query.OnlyInStock
+                }}
+                checked
+                {{
+                end
+                }}
+              />
+              <span class="grey-container main-checkmark"> </span>
               <span class="main-checkmark-text"
                 >Don’t show items out of stock</span
               >
@@ -83,146 +114,163 @@
           </div>
           <div class="checkbox-favorite">
             <label class="main-label main-text">
-              <input type="checkbox" />
-              <span class="main-checkmark grey-container"></span>
+              <input type="checkbox" name="only_favorite" value="true" />
+              <span class="main-checkmark grey-container"> </span>
               <span class="main-checkmark-text">Show only favorite items</span>
             </label>
           </div>
-          <button class="button-fill" style="width: 100%; margin-top: 48px">
-            Apply filters
-          </button>
+          <input
+            type="submit"
+            class="button-fill"
+            style="width: 100%; margin-top: 48px"
+            value="Apply filters"
+          />
         </div>
         <div class="main-content-block">
-          <div class="main-content-block-categories">
-            <div class="category grey-container-selected button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/bodies.png"
-                alt="category"
-              />
-              <p class="main-text">Bodies</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/decals.png"
-                alt="category"
-              />
-              <p class="main-text">Decals</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/wheels.png"
-                alt="category"
-              />
-              <p class="main-text">Wheels</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/boosts.png"
-                alt="category"
-              />
-              <p class="main-text">Boosts</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/antennas.png"
-                alt="category"
-              />
-              <p class="main-text">Antennas</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/explosions.png"
-                alt="category"
-              />
-              <p class="main-text">Goal Explosions</p>
-            </div>
-            <div class="category grey-container button-add-scale">
-              <img
-                class="category-image"
-                src="assets/img/trails.png"
-                alt="category"
-              />
-              <p class="main-text">Trails</p>
-            </div>
-          </div>
-
           <div class="main-content-block-items">
-            {{range .items}} {{template "item-card-view.html" .}} {{end}}
+            {{ if not .items}}
+            <p class="main-text" style="margin: auto; height: 200px">
+              No items
+            </p>
+            {{ end }} {{range .items}} {{template "item-card-view.html" .}}
+            {{end}}
           </div>
 
           <div class="main-content-block-pages">
             <div class="pages-per-page">
               <p class="main-text">Per page:</p>
               <p
-                class="main-text pages-per-page-selected"
+                class="main-text"
                 style="cursor: pointer"
+                id="pageSelection15"
+                onclick="setPageSize(15)"
               >
                 15
               </p>
-              <p class="main-text" style="cursor: pointer">30</p>
-              <p class="main-text" style="cursor: pointer">45</p>
+              <p
+                class="main-text"
+                style="cursor: pointer"
+                id="pageSelection30"
+                onclick="setPageSize(30)"
+              >
+                30
+              </p>
+              <p
+                class="main-text"
+                style="cursor: pointer"
+                id="pageSelection45"
+                onclick="setPageSize(45)"
+              >
+                45
+              </p>
             </div>
 
             <div class="pages-switch">
-              <div class="pages-switch-left grey-container button-add-scale">
+              <button
+                type="button"
+                class="pages-switch-left grey-container button-add-scale"
+                onclick="setPage(1)"
+                {{
+                if
+                not
+                .pagination.HasLess}}
+                disabled
+                {{
+                end
+                }}
+              >
                 <img
                   class="page-left-arrow"
-                  src="assets/img/ArrowLeft.svg"
+                  src="assets/img/arrowleft.svg"
                   alt="arrow"
                 />
-              </div>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
+              </button>
+              <button
+                type="button"
+                class="pages-switch-left grey-container button-add-scale"
+                onclick="setPage({{ .pagination.Page }} - 1)"
+                {{
+                if
+                not
+                .pagination.HasLess}}
+                disabled
+                {{
+                end
+                }}
               >
-                1
+                <img
+                  class="page-left-arrow"
+                  src="assets/img/arrowleft.svg"
+                  alt="arrow"
+                />
+              </button>
+              <p class="main-text pages-switch-number grey-containere">
+                {{ .pagination.Page }}
               </p>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
+              <button
+                type="button"
+                class="pages-switch-right grey-container button-add-scale"
+                onclick="setPage({{ .pagination.Page }} + 1)"
+                {{
+                if
+                not
+                .pagination.HasMore}}
+                disabled
+                {{
+                end
+                }}
               >
-                2
-              </p>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
-              >
-                3
-              </p>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
-              >
-                4
-              </p>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
-              >
-                5
-              </p>
-              <p class="main-text" style="line-height: 20px">...</p>
-              <p
-                class="main-text pages-switch-number grey-container button-add-scale"
-              >
-                999
-              </p>
-              <div class="pages-switch-right grey-container button-add-scale">
                 <img
                   class="page-right-arrow"
                   src="assets/img/ArrowRight.svg"
                   alt="arrow"
                 />
-              </div>
+              </button>
+              <button
+                type="button"
+                class="pages-switch-right grey-container button-add-scale"
+                onclick="setPage({{ .pagination.TotalPages }})"
+                {{
+                if
+                not
+                .pagination.HasMore}}
+                disabled
+                {{
+                end
+                }}
+              >
+                <img
+                  class="page-right-arrow"
+                  src="assets/img/ArrowRight.svg"
+                  alt="arrow"
+                />
+              </button>
             </div>
 
             <div class="pages-filler"></div>
           </div>
         </div>
-      </div>
+      </form>
     </main>
 
     {{template "footer.html"}}
+
+    <script>
+      document.getElementById("qualitySelection").value={{.query.Quality}};
+      document.getElementById("typeSelection").value={{.query.Type}};
+      document.getElementById("pageSelection{{ .pagination.Size }}").classList.add("pages-per-page-selected");
+
+      function setPageSize(size) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page_size", size);
+        window.location.search = urlParams;
+      }
+
+      function setPage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        window.location.search = urlParams;
+      }
+    </script>
   </body>
 </html>

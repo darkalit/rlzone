@@ -29,6 +29,7 @@ type Stock struct {
 
 type GetItemsQuery struct {
 	ID          uint   `json:"id"            form:"id"`
+	Name        string `json:"name"          form:"name"`
 	Sort        string `json:"sort"          form:"sort"`
 	MinPrice    uint   `json:"min_price"     form:"min_price"`
 	MaxPrice    uint   `json:"max_price"     form:"max_price"`

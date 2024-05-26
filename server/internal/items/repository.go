@@ -47,7 +47,7 @@ func (r *ItemsRepo) Get(ctx context.Context, query *GetItemsQuery) (*GetResponse
 	var items []Item
 	tx := r.db.WithContext(ctx)
 	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
-	tx = tx.Model(&Item{}).Preload("Stock")
+	tx = tx.Model(&Item{})
 
 	if id := query.ID; id != 0 {
 		tx = tx.Where("id = ?", id)
@@ -61,17 +61,68 @@ func (r *ItemsRepo) Get(ctx context.Context, query *GetItemsQuery) (*GetResponse
 		tx = tx.Where("quality = ?", quality)
 	}
 
-	// if onlyInStock := query.OnlyInStock; onlyInStock {
-	// 	tx = tx.Where("stock")
-	// }
+	if query.OnlyInStock || query.MaxPrice != 0 || query.MinPrice != 0 {
+		tx = tx.InnerJoins("Stock")
+	}
 
-	// if maxprice := query.MaxPrice; maxprice != 0 {
-	// 	tx = tx.Where("price <= ?", maxprice)
-	// }
-	//
-	// if minprice := query.MinPrice; minprice != 0 {
-	// 	tx = tx.Where("price >= ?", minprice)
-	// }
+	if maxprice := query.MaxPrice; maxprice != 0 {
+		tx = tx.Where("`Stock`.`price` <= ?", maxprice)
+	}
+
+	if minprice := query.MinPrice; minprice != 0 {
+		tx = tx.Where("`Stock`.`price` >= ?", minprice)
+	}
+
+	if name := query.Name; name != "" {
+		name = "%" + name + "%"
+		tx = tx.Where("name LIKE ?", name)
+	}
+
+	if sort := query.Sort; sort != "" {
+		var sortString string
+		switch sort {
+		case "id_desc":
+			sortString = "id desc"
+		case "id_asc":
+			sortString = "id asc"
+		case "price_id_desc":
+			sortString = "`Stock`.`price` desc"
+		case "price_id_asc":
+			sortString = "`Stock`.`price` asc"
+		case "quality_desc":
+			sortString = `CASE
+        WHEN quality = 'Common' THEN 0
+        WHEN quality = 'Uncommon' THEN 1
+        WHEN quality = 'Limited' THEN 2
+        WHEN quality = 'Rare' THEN 3
+        WHEN quality = 'Very Rare' THEN 4
+        WHEN quality = 'Import' THEN 5
+        WHEN quality = 'Exotic' THEN 6
+        WHEN quality = 'Black Market' THEN 7
+        WHEN quality = 'Premium' THEN 8
+        WHEN quality = 'Legacy' THEN 9
+        ELSE 99
+      END desc`
+		case "quality_asc":
+			sortString = `CASE
+        WHEN quality = 'Common' THEN 0
+        WHEN quality = 'Uncommon' THEN 1
+        WHEN quality = 'Limited' THEN 2
+        WHEN quality = 'Rare' THEN 3
+        WHEN quality = 'Very Rare' THEN 4
+        WHEN quality = 'Import' THEN 5
+        WHEN quality = 'Exotic' THEN 6
+        WHEN quality = 'Black Market' THEN 7
+        WHEN quality = 'Premium' THEN 8
+        WHEN quality = 'Legacy' THEN 9
+        ELSE 99
+      END asc`
+		default:
+			sortString = ""
+		}
+
+		tx = tx.Order(sortString)
+	}
 
 	tx.Count(&totalCount)
 
