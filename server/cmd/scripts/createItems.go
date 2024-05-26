@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
-	"io"
 	"log"
-	"net/http"
 	"os"
+	"strings"
 
 	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/internal/items"
@@ -79,25 +77,14 @@ func main() {
 				paintable = t
 			}
 
-			res, err := http.Get(val.Image)
-			if err != nil {
-				log.Print(err)
-				continue
+			commaIndex := strings.Index(val.Quality, ",")
+			if commaIndex != -1 {
+				val.Quality = val.Quality[:commaIndex]
 			}
-			defer res.Body.Close()
-
-			imageData, err := io.ReadAll(res.Body)
-			if err != nil {
-				log.Print(err)
-				continue
-			}
-
-			img64 := base64.StdEncoding.EncodeToString(imageData)
-			img64 = "data:" + res.Header.Get("content-type") + ";base64," + img64
 
 			item := items.Item{
 				Name:       val.Name,
-				Image:      img64,
+				Image:      val.Image,
 				Type:       val.Type,
 				Quality:    val.Quality,
 				Hitbox:     val.Hitbox,
@@ -111,7 +98,6 @@ func main() {
 				Series:     val.Series,
 			}
 
-			// fmt.Printf("%+v \n\n", item)
 			itemRepo.Create(ctx, &item)
 			break
 		default:
