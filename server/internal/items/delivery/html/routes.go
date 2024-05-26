@@ -6,5 +6,6 @@ func MapItemRoutes(router *gin.RouterGroup, h *Handler) {
 	itemsRoute := router.Group("/items")
 	{
 		itemsRoute.GET("", h.Get)
+		itemsRoute.GET("/create", h.Create)
 	}
 }

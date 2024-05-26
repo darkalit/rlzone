@@ -44,3 +44,14 @@ func (h *Handler) Get(c *gin.Context) {
 		"pagination": itemsResponse.Pagination,
 	})
 }
+
+func (h *Handler) Create(c *gin.Context) {
+	item, err := h.useCase.GetById(c.Request.Context(), 1)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+	}
+
+	c.HTML(http.StatusOK, "items-create.html", gin.H{
+		"item": item,
+	})
+}

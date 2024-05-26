@@ -21,14 +21,14 @@
     {{template "header-admin.html"}}
 
     <main class="main">
-      <div class="main-content">
+      <form class="main-content">
         <div
           class="main-content-sidebar"
           style="width: 340px; padding: 0px 36px 0px 36px"
         >
           <div class="card grey-container">
-            <img src="{{.Image}}" alt="car" />
-            <h1 class="car-name">{{.Name}}</h1>
+            <img src="{{.item.Image}}" alt="car" style="width: 254px" />
+            <h1 class="car-name">{{.item.Name}}</h1>
             <div class="credit-block">
               <img
                 src="/assets/img/Credits.svg"
@@ -51,55 +51,18 @@
             </div>
           </div>
           <div class="btn-glow">
-            <button class="button-gradient" style="margin-top: 48px">
+            <button
+              class="button-gradient"
+              type="submit"
+              style="margin-top: 48px"
+            >
               Create
             </button>
           </div>
         </div>
         <div class="main-content-block">
           <div class="main-description-table grey-container">
-            <table class="main-table">
-              <tr>
-                <td class="table-left-column">Type</td>
-                <td class="top-right-row">Body</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Hitbox</td>
-                <td>Breakout</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Reactive</td>
-                <td>No</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Quality</td>
-                <td>Common Import (painted)</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Trade in</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Paintable</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Blueprints</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Platform</td>
-                <td>All</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Sideswipe</td>
-                <td>Available</td>
-              </tr>
-              <tr>
-                <td class="table-left-column">Series</td>
-                <td>Non-Crate</td>
-              </tr>
-            </table>
+            <table class="main-table" id="itemTable"></table>
           </div>
 
           <div class="main-content-block-pages">
@@ -118,9 +81,36 @@
 
           <div class="pages-filler"></div>
         </div>
-      </div>
+      </form>
     </main>
 
     {{template "footer.html"}}
   </body>
+
+  <script>
+    const table = document.getElementById("itemTable");
+    const item = {{ .item }};
+    ["ID", "Image", "Stock"].forEach((e) => {
+      delete item[e];
+    })
+
+    for (let k in item) {
+      const tr = document.createElement("tr");
+      [k, item[k]].forEach((e) => {
+        if (e === false) {
+          e = "No";
+        }
+        if (e === true) {
+          e = "Yes";
+        }
+
+        const td = document.createElement("td");
+        const text = document.createTextNode(e);
+        td.appendChild(text);
+        tr.appendChild(td);
+      })
+
+      table.appendChild(tr);
+    }
+  </script>
 </html>
