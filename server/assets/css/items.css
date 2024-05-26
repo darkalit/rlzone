@@ -1,7 +1,7 @@
 :root {
-  --bg-main: #070A0C;
-  --bg-secondary: #232B30;
-  --bg-secondary-shade: #1B2328;
+  --bg-main: #070a0c;
+  --bg-secondary: #232b30;
+  --bg-secondary-shade: #1b2328;
   --text-main: #fff;
   --text-secondary: #070a0c;
   --primary-400: #39b2ff;
@@ -28,14 +28,18 @@ body {
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 72px;
   bottom: 1;
   margin: auto;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center top, rgba(0, 122, 198, 0.3) 0%, rgba(0, 122, 198, 0) 65%);
+  background: radial-gradient(
+    circle at center top,
+    rgba(0, 122, 198, 0.3) 0%,
+    rgba(0, 122, 198, 0) 65%
+  );
   pointer-events: none;
 }
 
@@ -76,8 +80,7 @@ select {
   font-size: 16px;
   color: var(--text-main);
   border: double 1px transparent;
-  background-image:
-    linear-gradient(var(--bg-secondary), var(--bg-secondary)),
+  background-image: linear-gradient(var(--bg-secondary), var(--bg-secondary)),
     linear-gradient(to bottom, rgba(100, 195, 255, 0.5), rgba(100, 195, 255, 0));
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -97,13 +100,13 @@ select::-ms-expand {
 }
 
 .select::after {
-  content: '\25BC';
+  content: "\25BC";
   position: absolute;
   padding: 8px 16px;
   top: 0;
   right: 0;
   color: var(--text-main);
-  transition: .25s all ease;
+  transition: 0.25s all ease;
   pointer-events: none;
 }
 
@@ -142,8 +145,7 @@ select::-ms-expand {
   color: var(--text-main);
   background: var(--bg-secondary);
   border: double 1px transparent;
-  background-image:
-    linear-gradient(var(--bg-secondary), var(--bg-secondary)),
+  background-image: linear-gradient(var(--bg-secondary), var(--bg-secondary)),
     linear-gradient(to bottom, rgba(100, 195, 255, 0.5), rgba(100, 195, 255, 0));
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -216,7 +218,7 @@ input[type="number"] {
 }
 
 .main-label input:checked ~ .main-checkmark {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 .main-checkmark:after {
@@ -245,8 +247,6 @@ input[type="number"] {
 .checkbox-favorite {
   margin-top: 24px;
 }
-
-
 
 .main-content-block {
   display: flex;
@@ -304,8 +304,6 @@ input[type="number"] {
   padding: 10px;
   gap: 10px;
 }
-
-
 
 .item {
   position: relative;
@@ -460,18 +458,30 @@ input[type="number"] {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  img {
+    height: 22px;
+  }
 }
 
-.pages-switch-left {
-  margin-right: 32px;
-}
-
+.pages-switch-left,
 .pages-switch-right {
-  margin-left: 32px;
+  border-style: none;
+  background: var(--bg-secondary);
+  border: double 1px transparent;
+  background-image: linear-gradient(var(--bg-secondary), var(--bg-secondary)),
+    linear-gradient(to bottom, rgba(100, 195, 255, 0.5), rgba(100, 195, 255, 0));
+}
+
+button:disabled,
+button[disabled] {
+  background-color: #1b2328;
+  opacity: 35%;
 }
 
 .pages-switch-number {
   line-height: 20px;
+  margin: 0px 16px;
 }
 
 .pages-filler {

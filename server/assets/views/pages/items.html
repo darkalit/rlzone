@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,11 +10,11 @@
       href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/header.css" />
-    <link rel="stylesheet" href="assets/css/button.css" />
-    <link rel="stylesheet" href="assets/css/footer.css" />
-    <link rel="stylesheet" href="assets/css/items.css" />
-    <link rel="stylesheet" href="assets/css/general.css" />
+    <link rel="stylesheet" href="/assets/css/header.css" />
+    <link rel="stylesheet" href="/assets/css/button.css" />
+    <link rel="stylesheet" href="/assets/css/footer.css" />
+    <link rel="stylesheet" href="/assets/css/items.css" />
+    <link rel="stylesheet" href="/assets/css/general.css" />
   </head>
 
   <body>
@@ -130,9 +130,17 @@
         <div class="main-content-block">
           <div class="main-content-block-items">
             {{ if not .items}}
-            <p class="main-text" style="margin: auto; height: 200px">
-              No items
-            </p>
+            <div
+              style="
+                display: flex;
+                height: 128px;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <p class="main-text" style="font-size: 20px">No items</p>
+            </div>
             {{ end }} {{range .items}} {{template "item-card-view.html" .}}
             {{end}}
           </div>
@@ -169,7 +177,7 @@
             <div class="pages-switch">
               <button
                 type="button"
-                class="pages-switch-left grey-container button-add-scale"
+                class="grey-container pages-switch-left button-add-scale"
                 onclick="setPage(1)"
                 {{
                 if
@@ -182,13 +190,13 @@
               >
                 <img
                   class="page-left-arrow"
-                  src="assets/img/arrowleft.svg"
+                  src="/assets/img/PageFirst.svg"
                   alt="arrow"
                 />
               </button>
               <button
                 type="button"
-                class="pages-switch-left grey-container button-add-scale"
+                class="grey-container pages-switch-left button-add-scale"
                 onclick="setPage({{ .pagination.Page }} - 1)"
                 {{
                 if
@@ -201,7 +209,7 @@
               >
                 <img
                   class="page-left-arrow"
-                  src="assets/img/arrowleft.svg"
+                  src="/assets/img/PagePrev.svg"
                   alt="arrow"
                 />
               </button>
@@ -210,7 +218,7 @@
               </p>
               <button
                 type="button"
-                class="pages-switch-right grey-container button-add-scale"
+                class="grey-container pages-switch-right button-add-scale"
                 onclick="setPage({{ .pagination.Page }} + 1)"
                 {{
                 if
@@ -223,13 +231,13 @@
               >
                 <img
                   class="page-right-arrow"
-                  src="assets/img/ArrowRight.svg"
+                  src="/assets/img/PageNext.svg"
                   alt="arrow"
                 />
               </button>
               <button
                 type="button"
-                class="pages-switch-right grey-container button-add-scale"
+                class="grey-container pages-switch-right button-add-scale"
                 onclick="setPage({{ .pagination.TotalPages }})"
                 {{
                 if
@@ -242,7 +250,7 @@
               >
                 <img
                   class="page-right-arrow"
-                  src="assets/img/ArrowRight.svg"
+                  src="/assets/img/PageLast.svg"
                   alt="arrow"
                 />
               </button>
