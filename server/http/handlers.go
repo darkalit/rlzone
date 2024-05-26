@@ -23,6 +23,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 			AllowCredentials: true,
 		}),
 	)
+	e.Static("/assets", "./assets")
 	e.LoadHTMLGlob("assets/views/**/*")
 
 	v1 := e.Group("/api/v1")
