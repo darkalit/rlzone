@@ -1,68 +1,126 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RL Zone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/header.css" />
+    <link rel="stylesheet" href="/assets/css/button.css" />
+    <link rel="stylesheet" href="/assets/css/footer.css" />
+    <link rel="stylesheet" href="/assets/css/create-item.css" />
+    <link rel="stylesheet" href="/assets/css/general.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RL Zone</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="resources/css/header-style.css">
-  <link rel="stylesheet" href="resources/css/button-style.css">
-  <link rel="stylesheet" href="resources/css/footer-style.css">
-  <link rel="stylesheet" href="resources/css/create-item-style.css">
-  <link rel="stylesheet" href="resources/css/general-styles.css">
-</head>
+  <body>
+    {{template "header-admin.html"}}
 
-<body>
-  {{template "header-admin.html"}}
-
-  <main class="main">
-    <div class="main-content">
-      <div class="main-content-sidebar" style="width: 340px; padding: 0px 36px 0px 36px;">
-        <div class="card grey-container">
-          <img src="{{.Image}}" alt="car">
-          <h1 class="car-name">{{.Name}}</h1>
-          <div class="credit-block">
-            <img src="assets/img/Credits.svg" alt="credits" style="width: 24px; height: 24px;">
-            <input class="credit-input grey-container-shade" type="number" placeholder="Enter price...">
-          </div>
-          <div class="btn-block">
-            <button class="change-btn button-fill button-add-glow" type="button">Change item base</button>
-          </div>
-        </div>
-        <div class="btn-glow">
-          <button class="button-gradient" style="margin-top: 48px">Create</button>
-        </div>
-      </div>
-      <div class=" main-content-block">
-        <div class="main-description-table grey-container">
-          <table class="main-table ">
-            {{.table}}
-          </table>
-        </div>
-
-        <div class="main-content-block-pages">
-          <div class="main-block-description grey-container">
-            <div class="block-description-title">
-              <img src="resources/img/note.svg" alt="note">
-              <h1 class="accent-text">Description</h1>
+    <main class="main">
+      <div class="main-content">
+        <div
+          class="main-content-sidebar"
+          style="width: 340px; padding: 0px 36px 0px 36px"
+        >
+          <div class="card grey-container">
+            <img src="{{.Image}}" alt="car" />
+            <h1 class="car-name">{{.Name}}</h1>
+            <div class="credit-block">
+              <img
+                src="/assets/img/Credits.svg"
+                alt="credits"
+                style="width: 24px; height: 24px"
+              />
+              <input
+                class="credit-input grey-container-shade"
+                type="number"
+                placeholder="Enter price..."
+              />
             </div>
-            <textarea class="description-input grey-container-shade" type="text"
-              placeholder="Enter description..."></textarea>
+            <div class="btn-block">
+              <button
+                class="change-btn button-fill button-add-glow"
+                type="button"
+              >
+                Change item base
+              </button>
+            </div>
+          </div>
+          <div class="btn-glow">
+            <button class="button-gradient" style="margin-top: 48px">
+              Create
+            </button>
           </div>
         </div>
+        <div class="main-content-block">
+          <div class="main-description-table grey-container">
+            <table class="main-table">
+              <tr>
+                <td class="table-left-column">Type</td>
+                <td class="top-right-row">Body</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Hitbox</td>
+                <td>Breakout</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Reactive</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Quality</td>
+                <td>Common Import (painted)</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Trade in</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Paintable</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Blueprints</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Platform</td>
+                <td>All</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Sideswipe</td>
+                <td>Available</td>
+              </tr>
+              <tr>
+                <td class="table-left-column">Series</td>
+                <td>Non-Crate</td>
+              </tr>
+            </table>
+          </div>
 
-        <div class="pages-filler"></div>
+          <div class="main-content-block-pages">
+            <div class="main-block-description grey-container">
+              <div class="block-description-title">
+                <img src="/assets/img/note.svg" alt="note" />
+                <h1 class="accent-text">Description</h1>
+              </div>
+              <textarea
+                class="description-input grey-container-shade"
+                type="text"
+                placeholder="Enter description..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="pages-filler"></div>
+        </div>
       </div>
-    </div>
-    </div>
-  </main>
+    </main>
 
-  {{template "footer.html"}}
-</body>
-
+    {{template "footer.html"}}
+  </body>
 </html>
