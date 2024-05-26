@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -29,11 +29,12 @@
           <h2 class="accent-text">Sort</h2>
           <p class="subtext">Item sorting</p>
           <div class="select">
-            <select>
-              <option>By Quality</option>
-              <option>By Price</option>
-              <option>By Quantity</option>
-              <option>By Raiting</option>
+            <select name="sort" id="sortSelection">
+              <option value="">None</option>
+              <option value="quality_asc">By Quality Ascending</option>
+              <option value="price_asc">By Price Ascending</option>
+              <option value="quality_desc">By Quality Descending</option>
+              <option value="price_desc">By Price Descending</option>
             </select>
           </div>
           <div class="filter">
@@ -258,6 +259,7 @@
     <script>
       document.getElementById("qualitySelection").value={{.query.Quality}};
       document.getElementById("typeSelection").value={{.query.Type}};
+      document.getElementById("sortSelection").value={{.query.Sort}};
       document.getElementById("pageSelection{{ .pagination.Size }}").classList.add("pages-per-page-selected");
 
       function setPageSize(size) {
