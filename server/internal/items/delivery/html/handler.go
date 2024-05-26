@@ -46,12 +46,18 @@ func (h *Handler) Get(c *gin.Context) {
 }
 
 func (h *Handler) Create(c *gin.Context) {
-	item, err := h.useCase.GetById(c.Request.Context(), 1)
+	itemsResponse, err := h.useCase.Get(c.Request.Context(), &items.GetItemsQuery{
+		PageSize: 1,
+	})
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 	}
 
+	if len(itemsResponse.Items) == 0 {
+		c.JSON(500, httpErrors.NewRestError(500, "No items", &struct{}{}))
+	}
+
 	c.HTML(http.StatusOK, "items-create.html", gin.H{
-		"item": item,
+		"item": itemsResponse.Items[0],
 	})
 }
