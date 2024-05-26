@@ -6,6 +6,7 @@ import (
 
 	restHealth "github.com/darkalit/rlzone/server/internal/health/delivery/rest"
 	"github.com/darkalit/rlzone/server/internal/items"
+	htmlItems "github.com/darkalit/rlzone/server/internal/items/delivery/html"
 	restItems "github.com/darkalit/rlzone/server/internal/items/delivery/rest"
 	"github.com/darkalit/rlzone/server/internal/middleware"
 	"github.com/darkalit/rlzone/server/internal/users"
@@ -26,21 +27,24 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	)
 
 	v1 := e.Group("/api/v1")
+	h := e.Group("/")
 
-	healthHandler := restHealth.NewHandler()
+	healthRestHandler := restHealth.NewHandler()
 
 	usersRepo := users.NewUserRepository(s.config, s.db)
 	usersUseCase := users.NewUserUseCase(usersRepo, s.config)
-	usersHandler := restUsers.NewHandler(s.config, usersUseCase)
+	usersRestHandler := restUsers.NewHandler(s.config, usersUseCase)
 
 	itemsRepo := items.NewItemRepository(s.config, s.db)
 	itemsUseCase := items.NewItemUseCase(itemsRepo)
-	itemsHandler := restItems.NewHandler(s.config, itemsUseCase)
+	itemsRestHandler := restItems.NewHandler(s.config, itemsUseCase)
+	itemsHtmlHandler := htmlItems.NewHandler(s.config, itemsUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
-	restHealth.MapHealthRoutes(v1, healthHandler)
-	restUsers.MapUserRoutes(v1, usersHandler, mw)
-	restItems.MapItemRoutes(v1, itemsHandler, mw)
+	restHealth.MapHealthRoutes(v1, healthRestHandler)
+	restUsers.MapUserRoutes(v1, usersRestHandler, mw)
+	restItems.MapItemRoutes(v1, itemsRestHandler, mw)
+	htmlItems.MapItemRoutes(h, itemsHtmlHandler)
 
 	return nil
 }
