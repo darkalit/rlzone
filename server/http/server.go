@@ -15,7 +15,7 @@ type Server struct {
 }
 
 func NewServer() (*Server, error) {
-	engine := gin.New()
+	engine := gin.Default()
 
 	cfg, err := config.GetConfig()
 	if err != nil {

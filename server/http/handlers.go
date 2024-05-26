@@ -15,8 +15,6 @@ import (
 
 func (s *Server) MapHandlers(e *gin.Engine) error {
 	e.Use(
-		gin.Logger(),
-		gin.Recovery(),
 		cors.New(cors.Config{
 			AllowOrigins:     []string{"http://localhost:3000"},
 			AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "OPTIONS"},
@@ -25,8 +23,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 			AllowCredentials: true,
 		}),
 	)
-	e.LoadHTMLGlob("assets/views/*.html")
-	e.LoadHTMLGlob("assets/views/components/*.html")
+	e.LoadHTMLGlob("assets/views/**/*")
 
 	v1 := e.Group("/api/v1")
 	h := e.Group("/")
