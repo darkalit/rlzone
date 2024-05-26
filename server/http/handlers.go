@@ -25,6 +25,8 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 			AllowCredentials: true,
 		}),
 	)
+	e.LoadHTMLGlob("assets/views/*.html")
+	e.LoadHTMLGlob("assets/views/components/*.html")
 
 	v1 := e.Group("/api/v1")
 	h := e.Group("/")

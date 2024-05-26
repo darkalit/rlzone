@@ -35,5 +35,5 @@ func (h *Handler) Get(c *gin.Context) {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
-	c.HTML(http.StatusOK, "../../../../assets/views/index.html", itemsResponse)
+	c.HTML(http.StatusOK, "index.html", itemsResponse)
 }
