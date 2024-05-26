@@ -1,0 +1,31 @@
+<div class="item grey-container">
+  <div class="item-image-container">
+    <img class="item-image" src="{{.Image}}" alt="item" />
+  </div>
+  <div class="item-info">
+    <p class="main-text item-name">{{.Name}}</p>
+    <p class="item-quality">{{.Quality}}</p>
+    <div class="item-price-container">
+      <img
+        class="item-price-credits"
+        src="assets/img/Credits.svg"
+        alt="credits"
+      />
+      <p class="main-text item-price">
+        {{if .Stock}} {{.Stock.Price}} {{else}} - {{end}}
+      </p>
+    </div>
+    {{if .Stock}}
+    <button class="item-button-sell">Buy</button>
+    {{else}}
+    <p class="item-stock">Not in stock</p>
+    {{end}}
+  </div>
+  <button class="item-favorite-button">
+    <img
+      class="item-action-icon"
+      src="assets/img/Favorite.svg"
+      alt="favorite"
+    />
+  </button>
+</div>

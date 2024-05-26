@@ -1,0 +1,19 @@
+<div class="item grey-container">
+  <div class="item-image-container">
+    <img class="item-image" src="{{.Image}}" alt="item" />
+  </div>
+  <div class="item-info">
+    <p class="main-text item-name">{{.Name}}</p>
+    <p class="item-quality">{{.Quality}}</p>
+    <div class="item-price-container">
+      <img
+        class="item-price-credits"
+        src="assets/img/Credits.svg"
+        alt="credits"
+      />
+      <p class="main-text item-price">
+        {{if .Stock}} {{.Stock.Price}} {{else}} - {{end}}
+      </p>
+    </div>
+  </div>
+</div>
