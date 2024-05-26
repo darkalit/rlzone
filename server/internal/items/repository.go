@@ -54,12 +54,10 @@ func (r *ItemsRepo) Get(ctx context.Context, query *GetItemsQuery) (*GetResponse
 	}
 
 	if itemType := query.Type; itemType != "" {
-		itemType = "%" + itemType + "%"
 		tx = tx.Where("type = ?", itemType)
 	}
 
 	if quality := query.Quality; quality != "" {
-		quality = "%" + quality + "%"
 		tx = tx.Where("quality = ?", quality)
 	}
 

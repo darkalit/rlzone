@@ -35,5 +35,7 @@ func (h *Handler) Get(c *gin.Context) {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
-	c.HTML(http.StatusOK, "items.html", itemsResponse)
+	c.HTML(http.StatusOK, "items.html", gin.H{
+		"items": itemsResponse.Items,
+	})
 }
