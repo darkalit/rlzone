@@ -69,6 +69,12 @@ func (u *User) BeforeSave(tx *gorm.DB) (err error) {
 	return nil
 }
 
+type InventoryItem struct {
+	ID     uint `gorm:"column:id;primaryKey"`
+	ItemID uint
+	UserID uint
+}
+
 type Token struct {
 	ID           uint   `gorm:"column:id;primaryKey"`
 	RefreshToken string `gorm:"column:refresh_token"`
@@ -78,7 +84,6 @@ type Token struct {
 
 type UserWithTokens struct {
 	User         User
-	AccessToken  string
 	RefreshToken string
 }
 

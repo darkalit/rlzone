@@ -2,31 +2,26 @@ package middleware
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/darkalit/rlzone/server/internal/users"
 	"github.com/darkalit/rlzone/server/pkg/auth"
+	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
 
 func (mw *MiddlewareManager) AuthJWTMiddleware(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		c.Status(http.StatusForbidden)
-		c.Abort()
+	jwtCookie, err := c.Cookie("jwt")
+	if err != nil {
+		c.JSON(
+			httpErrors.ErrorResponse(
+				httpErrors.NewRestError(http.StatusUnauthorized, "JWT is undefined", err),
+			),
+		)
 		return
 	}
 
-	t := strings.Split(authHeader, " ")
-	if len(t) != 2 {
-		c.Status(http.StatusForbidden)
-		c.Abort()
-		return
-	}
-
-	token := t[1]
-	payload, err := auth.VerifyToken(token, mw.cfg, auth.AccessTokenType)
+	payload, err := auth.VerifyToken(jwtCookie, mw.cfg, auth.RefreshTokenType)
 	if err != nil {
 		c.Status(http.StatusForbidden)
 		c.Abort()

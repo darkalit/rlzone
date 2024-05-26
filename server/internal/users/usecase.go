@@ -76,15 +76,9 @@ func (u *UsersUseCase) Register(
 		return nil, err
 	}
 
-	accessToken, err := auth.GenJWT(&payload, u.cfg, auth.AccessTokenType)
-	if err != nil {
-		return nil, err
-	}
-
 	return &UserWithTokens{
 		User:         createdUser,
 		RefreshToken: refreshToken,
-		AccessToken:  accessToken,
 	}, nil
 }
 
@@ -115,15 +109,9 @@ func (u *UsersUseCase) Login(ctx context.Context, request *LoginRequest) (*UserW
 	}
 	u.repo.CreateOrUpdate(ctx, &createdToken)
 
-	accessToken, err := auth.GenJWT(&payload, u.cfg, auth.AccessTokenType)
-	if err != nil {
-		return nil, err
-	}
-
 	return &UserWithTokens{
 		User:         *foundUser,
 		RefreshToken: refreshToken,
-		AccessToken:  accessToken,
 	}, nil
 }
 
@@ -157,15 +145,9 @@ func (u *UsersUseCase) RefreshToken(
 	}
 	u.repo.CreateOrUpdate(ctx, &token)
 
-	newAccessToken, err := auth.GenJWT(payload, u.cfg, auth.AccessTokenType)
-	if err != nil {
-		return nil, err
-	}
-
 	return &UserWithTokens{
 		User:         *foundUser,
 		RefreshToken: newRefreshToken,
-		AccessToken:  newAccessToken,
 	}, nil
 }
 
