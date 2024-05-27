@@ -59,7 +59,7 @@ type GetInventoryResponse struct {
 }
 
 type CreateStockRequest struct {
-	Price       uint   `json:"price"       binding:"required"`
-	Description string `json:"description" binding:"required"`
-	ItemID      uint   `json:"item_id"     binding:"required"`
+	Price       uint   `json:"price"       form:"price"       binding:"required"`
+	Description string `json:"description" form:"description" binding:"required"`
+	ItemID      uint   `json:"item_id"     form:"item_id"     binding:"required"`
 }

@@ -1,8 +1,12 @@
-<div class="main-card-block">
-  <div class="main-card grey-container">
-    <img src="{{.Image}}" alt="car" style="width: 97px" />
-    <p class="main-text" style="width: 152px">{{.Name}}</p>
-    <p class="main-text" style="width: 120px">{{.Quality}}</p>
-    <p class="main-text" style="width: 120px">{{.Type}}</p>
+<div class="modal-search-results">
+  {{ range .items}}
+  <div class="main-card-block" onclick="changeItem({{ . }})">
+    <div class="main-card grey-container">
+      <img src="{{.Image}}" alt="car" style="width: 97px" />
+      <p class="main-text" style="width: 152px">{{.Name}}</p>
+      <p class="main-text" style="width: 120px">{{.Quality}}</p>
+      <p class="main-text" style="width: 120px">{{.Type}}</p>
+    </div>
   </div>
+  {{ end }}
 </div>
