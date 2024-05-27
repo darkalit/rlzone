@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,6 +22,8 @@
       "
     >
       <form
+        action="/users/login"
+        method="post"
         style="
           display: flex;
           flex-direction: column;
@@ -32,11 +34,11 @@
       >
         <div style="display: flex; flex-direction: column">
           <p style="margin: 0; font-size: 24px">Email</p>
-          <input type="email" style="font-size: 24px" />
+          <input type="email" name="email" style="font-size: 24px" />
         </div>
         <div style="display: flex; flex-direction: column">
           <p style="margin: 0; font-size: 24px">Password</p>
-          <input type="password" style="font-size: 24px" />
+          <input type="password" name="password" style="font-size: 24px" />
         </div>
         <button
           type="submit"
@@ -48,11 +50,4 @@
       </form>
     </div>
   </body>
-
-  <script>
-    const btn = document.getElementById("login");
-    btn.onclick = function () {
-      console.log("tipa login");
-    };
-  </script>
 </html>
