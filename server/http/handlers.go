@@ -10,6 +10,7 @@ import (
 	restItems "github.com/darkalit/rlzone/server/internal/items/delivery/rest"
 	"github.com/darkalit/rlzone/server/internal/middleware"
 	"github.com/darkalit/rlzone/server/internal/users"
+	htmlUsers "github.com/darkalit/rlzone/server/internal/users/delivery/html"
 	restUsers "github.com/darkalit/rlzone/server/internal/users/delivery/rest"
 )
 
@@ -34,6 +35,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	usersRepo := users.NewUserRepository(s.config, s.db)
 	usersUseCase := users.NewUserUseCase(usersRepo, s.config)
 	usersRestHandler := restUsers.NewHandler(s.config, usersUseCase)
+	usersHtmlHandler := htmlUsers.NewHandler(s.config, usersUseCase)
 
 	itemsRepo := items.NewItemRepository(s.config, s.db)
 	itemsUseCase := items.NewItemUseCase(itemsRepo)
@@ -43,6 +45,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
 	restHealth.MapHealthRoutes(v1, healthRestHandler)
 	restUsers.MapUserRoutes(v1, usersRestHandler, mw)
+	htmlUsers.MapItemRoutes(h, usersHtmlHandler)
 	restItems.MapItemRoutes(v1, itemsRestHandler, mw)
 	htmlItems.MapItemRoutes(h, itemsHtmlHandler)
 
