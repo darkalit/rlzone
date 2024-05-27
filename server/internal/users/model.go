@@ -97,14 +97,14 @@ type GetUsersQuery struct {
 }
 
 type RegisterRequest struct {
-	Email    string `json:"email"    binding:"required"`
-	EpicID   string `json:"epic_id"  binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Email    string `json:"email"    form:"email"    binding:"required"`
+	EpicID   string `json:"epic_id"  form:"epic_id"  binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
 
 type LoginRequest struct {
-	Email    string `json:"email"    binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Email    string `json:"email"    form:"email"    binding:"required"`
+	Password string `json:"password" form:"password" binding:"required"`
 }
 
 type GetResponse struct {
