@@ -42,6 +42,14 @@ func NewRestError(status int, error string, cause interface{}) RestErr {
 	}
 }
 
+func NewRestErrorMessage(status int, error string) RestErr {
+	return RestError{
+		ErrStatus: status,
+		ErrError:  error,
+		ErrCause:  struct{}{},
+	}
+}
+
 func parseValidatorError(err error) RestErr {
 	switch {
 	default:
