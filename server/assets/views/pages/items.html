@@ -141,7 +141,7 @@
             >
               <p class="main-text" style="font-size: 20px">No items</p>
             </div>
-            {{ end }} {{range .items}} {{template "item-card-view.html" .}}
+            {{ end }} {{range .items}} {{template "item-card-buy.html" .}}
             {{end}}
           </div>
 
@@ -261,10 +261,67 @@
         </div>
       </form>
     </main>
+    <div id="myModal" class="modal">
+      <div class="grey-container-shade modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Confirm the purchase</h2>
+        </div>
+        <div
+          class="modal-body"
+          style="display: flex; justify-content: center; gap: 32px"
+        >
+          <img src="{{.Image}}" style="width: 128px; height: 128px"></img>
+          <div style="display: flex; flex-direction: column; gap: 16px">
+            <h2>{{.Name}}</h2>
+            <div style="display: flex; gap: 8px">
+              <img
+                src="/assets/img/Credits.svg"
+                alt="credits"
+                style="width: 24px; height: 24px"
+              />
+              <p class="main-text">{{.Price}}</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="modal-buttons"
+          style="display: flex; justify-content: space-around; margin-top: 32px"
+        >
+          <button class="button-outline" type="button" id="cancel">
+            Cancel
+          </button>
+          <button class="button-fill" id="confirmBuy">Confirm</button>
+        </div>
+      </div>
+    </div>
 
     {{template "footer.html"}}
 
     <script>
+      const modal = document.getElementById("myModal");
+      const btn = document.getElementById("buy");
+      const span = document.getElementsByClassName("close")[0];
+      const btnClose = document.getElementById("cancel");
+
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      btnClose.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
       document.getElementById("qualitySelection").value={{.query.Quality}};
       document.getElementById("typeSelection").value={{.query.Type}};
       document.getElementById("sortSelection").value={{.query.Sort}};

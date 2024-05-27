@@ -16,7 +16,14 @@
       </p>
     </div>
     {{if .Stock}}
-    <button class="item-button-sell">Buy</button>
+    <button
+      class="button-fill item-button-sell"
+      id="buy"
+      type="button"
+      style="height: 32px; padding: 6px 24px"
+    >
+      Buy
+    </button>
     {{else}}
     <p class="item-stock">Not in stock</p>
     {{end}}
