@@ -304,17 +304,17 @@
       const span = document.getElementsByClassName("close")[0];
       const btnClose = document.getElementById("cancel");
 
-      btn.onclick = function() {
+      btn && (btn.onclick = function() {
         modal.style.display = "block";
-      }
+      });
 
-      span.onclick = function() {
+      span && (span.onclick = function() {
         modal.style.display = "none";
-      }
+      });
 
-      btnClose.onclick = function() {
+      btnClose && (btnClose.onclick = function() {
         modal.style.display = "none";
-      }
+      });
 
       window.onclick = function(event) {
         if (event.target == modal) {
