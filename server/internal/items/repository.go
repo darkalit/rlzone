@@ -268,7 +268,7 @@ func (r *ItemsRepo) BuyItem(ctx context.Context, itemId uint, userId uint) (*Inv
 	return &inventoryItem, nil
 }
 
-func (r *ItemsRepo) SellInventoryItem(
+func (r *ItemsRepo) SellItem(
 	ctx context.Context,
 	itemId uint,
 	userId uint,
