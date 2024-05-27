@@ -6,6 +6,13 @@ type UseCase interface {
 	Get(ctx context.Context, query *GetItemsQuery) (*GetResponse, error)
 	GetById(ctx context.Context, id uint) (*Item, error)
 	CreateStock(ctx context.Context, createStockRequest *CreateStockRequest) (*Stock, error)
+	BuyItem(ctx context.Context, itemId uint, userId uint) (*InventoryItem, error)
+	SellItem(ctx context.Context, itemId uint, userId uint) (*InventoryItem, error)
+	GetInventory(
+		ctx context.Context,
+		query *GetItemsQuery,
+		userId uint,
+	) (*GetInventoryResponse, error)
 }
 
 type ItemsUseCase struct {
@@ -42,4 +49,28 @@ func (u *ItemsUseCase) CreateStock(
 	}
 
 	return &createdStock, nil
+}
+
+func (u *ItemsUseCase) BuyItem(
+	ctx context.Context,
+	itemId uint,
+	userId uint,
+) (*InventoryItem, error) {
+	return u.repo.BuyItem(ctx, itemId, userId)
+}
+
+func (u *ItemsUseCase) SellItem(
+	ctx context.Context,
+	itemId uint,
+	userId uint,
+) (*InventoryItem, error) {
+	return u.repo.SellItem(ctx, itemId, userId)
+}
+
+func (u *ItemsUseCase) GetInventory(
+	ctx context.Context,
+	query *GetItemsQuery,
+	userId uint,
+) (*GetInventoryResponse, error) {
+	return u.repo.GetInventory(ctx, query, userId)
 }

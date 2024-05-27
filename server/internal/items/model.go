@@ -27,6 +27,14 @@ type Stock struct {
 	ItemID      uint   `gorm:"column:item_id"`
 }
 
+type InventoryItem struct {
+	ID     uint `gorm:"primaryKey"`
+	Count  uint `gorm:"column:count"`
+	UserID uint
+	ItemID uint
+	Item   Item
+}
+
 type GetItemsQuery struct {
 	ID          uint   `json:"id"            form:"id"`
 	Name        string `json:"name"          form:"name"`
@@ -43,6 +51,11 @@ type GetItemsQuery struct {
 type GetResponse struct {
 	Items      []Item
 	Pagination pagination.Pagination
+}
+
+type GetInventoryResponse struct {
+	InventoryItems []InventoryItem
+	Pagination     pagination.Pagination
 }
 
 type CreateStockRequest struct {
