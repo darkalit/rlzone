@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -43,6 +43,7 @@
             </div>
             <div class="btn-block">
               <button
+                id="changeItemBase"
                 class="change-btn button-fill button-add-glow"
                 type="button"
               >
@@ -83,11 +84,49 @@
         </div>
       </form>
     </main>
+    <div id="myModal" class="modal">
+      <div class="grey-container-shade modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Find Item</h2>
+        </div>
+        <div class="modal-body">
+          <div class="modal-search">
+            <img src="/assets/img/MagnifyingGlass.svg" alt="magnifyingGlass" />
+            <input
+              class="modal-search-field"
+              type="text"
+              placeholder="Find an item..."
+            />
+            <button type="button" class="modal-search-button">➜</button>
+          </div>
+        </div>
+        <div class="modal-search-results"></div>
+      </div>
+    </div>
 
     {{template "footer.html"}}
   </body>
 
   <script>
+    const modal = document.getElementById("myModal");
+    const btn = document.getElementById("changeItemBase");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
     const table = document.getElementById("itemTable");
     const item = {{ .item }};
     ["ID", "Image", "Stock"].forEach((e) => {
