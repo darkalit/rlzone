@@ -8,8 +8,7 @@ export function GetItems() {
   });
 }
 
-export function GetItemByID(id) {
-  return fetch(apiUrl + "/" + id).then((res) => {
-    return res.json();
-  });
+export async function GetItemByID(id) {
+  const res = await fetch(apiUrl + "/" + id);
+  return await res.json();
 }

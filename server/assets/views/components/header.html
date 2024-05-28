@@ -13,7 +13,16 @@
       />
       <button type="submit" class="header-search-button">➜</button>
     </form>
-    {{ if eq .Role "admin" }}
+    {{ if not . }}
+    <div class="header-btns">
+      <a href="/users/login"
+        ><button class="button-outline" style="width: 106px">Login</button></a
+      >
+      <a href="#"
+        ><button class="button-fill" style="width: 106px">Sign Up</button></a
+      >
+    </div>
+    {{ else }} {{ if .Role "admin" }}
     <div class="header-buy-sell">
       <div class="header-sell-block">
         <a href="#" class="header-edit">Edit listings</a>
@@ -68,15 +77,6 @@
         </a>
       </div>
     </div>
-    {{ else }}
-    <div class="header-btns">
-      <a href="/users/login"
-        ><button class="button-outline" style="width: 106px">Login</button></a
-      >
-      <a href="#"
-        ><button class="button-fill" style="width: 106px">Sign Up</button></a
-      >
-    </div>
-    {{ end }}
+    {{ end }} {{ end }}
   </div>
 </header>
