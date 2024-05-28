@@ -13,7 +13,7 @@
       />
       <button type="submit" class="header-search-button">➜</button>
     </form>
-    {{ if eq .Role "Admin" }}
+    {{ if .}} {{ if eq .Role "Admin" }}
     <div class="header-buy-sell">
       <div class="header-sell-block">
         <a href="#" class="header-edit">Edit listings</a>
@@ -68,7 +68,7 @@
         </a>
       </div>
     </div>
-    {{ else }}
+    {{ end }} {{ else }}
     <div class="header-btns">
       <a href="/users/login"
         ><button class="button-outline" style="width: 106px">Login</button></a
