@@ -20,8 +20,7 @@
       class="button-fill item-button-sell"
       type="button"
       style="height: 32px; padding: 6px 24px"
-      value="{{ .ID }}"
-      onclick="(() => {modal.style.display = 'block';fetch('/api/v1/items/' + this.value).then((res) => res.json()).then((data) => {document.getElementById('modalImage').src = data.Image;document.getElementById('modalName').innerText = data.Name;document.getElementById('modalPrice').innerText = data.Stock.Price;});document.getElementById('modalItemId').value=this.value})()"
+      onclick="setModalInfo({{ .ID }})"
     >
       Buy
     </button>

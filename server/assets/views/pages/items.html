@@ -320,6 +320,18 @@
         }
       }
 
+      function setModalInfo(itemId) {
+        modal.style.display = 'block';
+        fetch('/api/v1/items/' + itemId)
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById('modalImage').src = data.Image;
+            document.getElementById('modalName').innerText = data.Name;
+            document.getElementById('modalPrice').innerText = data.Stock.Price;
+          });
+        document.getElementById('modalItemId').value=itemId;
+      }
+
       document.getElementById("qualitySelection").value={{.query.Quality}};
       document.getElementById("typeSelection").value={{.query.Type}};
       document.getElementById("sortSelection").value={{.query.Sort}};
