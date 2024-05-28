@@ -3,11 +3,37 @@
     <a href="/"
       ><img class="header-logo" src="/assets/img/LogoMain.svg" alt="logo"
     /></a>
-    <div class="header-block-search">
+    <form class="header-block-search">
       <img src="/assets/img/MagnifyingGlass.svg" alt="magnifyingGlass" />
-      <input class="header-search" type="text" placeholder="Find an item..." />
-      <button type="button" class="header-search-button">➜</button>
+      <input
+        class="header-search"
+        type="text"
+        name="name"
+        placeholder="Find an item..."
+      />
+      <button type="submit" class="header-search-button">➜</button>
+    </form>
+    {{ if eq .Role "Admin" }}
+    <div class="header-buy-sell">
+      <div class="header-sell-block">
+        <a href="#" class="header-edit">Edit listings</a>
+      </div>
+      <div class="header-buy-block">
+        <a href="#" class="header-buy">User control</a>
+      </div>
     </div>
+    <div class="header-right-block">
+      <div class="header-block-settings button-add-scale">
+        <a class="header-svg-icons" href="#"
+          ><img
+            src="/assets/img/profileIcon.svg"
+            alt="profileIcon"
+            style="width: 40px; height: 40px"
+        /></a>
+        <p class="header-main-text">AdminUser</p>
+      </div>
+    </div>
+    {{ else if eq .Role "User" }}
     <div class="header-buy-sell">
       <div class="header-buy-block">
         <a href="/items" class="header-buy">Buy</a>
@@ -42,5 +68,15 @@
         </a>
       </div>
     </div>
+    {{ else }}
+    <div class="header-btns">
+      <a href="/users/login"
+        ><button class="button-outline" style="width: 106px">Login</button></a
+      >
+      <a href="#"
+        ><button class="button-fill" style="width: 106px">Sign Up</button></a
+      >
+    </div>
+    {{ end }}
   </div>
 </header>
