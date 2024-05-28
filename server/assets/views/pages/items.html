@@ -18,7 +18,7 @@
   </head>
 
   <body>
-    {{template "header-guest.html"}}
+    {{template "header.html" .user}}
 
     <main class="main">
       <form class="main-content">
@@ -302,6 +302,8 @@
     {{template "footer.html"}}
 
     <script>
+      console.log({{.user}})
+
       const modal = document.getElementById("myModal");
       const span = document.getElementsByClassName("close")[0];
       const btnClose = document.getElementById("cancel");

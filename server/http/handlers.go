@@ -43,6 +43,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	itemsHtmlHandler := htmlItems.NewHandler(s.config, itemsUseCase, usersUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
+	h.Use(mw.SetPayload)
 	restHealth.MapHealthRoutes(v1, healthRestHandler)
 	restUsers.MapUserRoutes(v1, usersRestHandler, mw)
 	htmlUsers.MapItemRoutes(h, usersHtmlHandler)

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,24 @@ import (
 	"github.com/darkalit/rlzone/server/pkg/auth"
 	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
+
+func (mw *MiddlewareManager) SetPayload(c *gin.Context) {
+	jwtCookie, err := c.Cookie("jwt")
+	if err != nil {
+		c.Next()
+		return
+	}
+
+	payload, err := auth.VerifyToken(jwtCookie, mw.cfg, auth.RefreshTokenType)
+	if err != nil {
+		c.Next()
+		return
+	}
+
+	log.Print("GHEJIOGHUSUIKOL")
+	c.Set("payload", *payload)
+	c.Next()
+}
 
 func (mw *MiddlewareManager) AuthJWTMiddleware(c *gin.Context) {
 	jwtCookie, err := c.Cookie("jwt")

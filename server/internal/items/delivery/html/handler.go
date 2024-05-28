@@ -29,11 +29,22 @@ func NewHandler(cfg *config.Config, useCase items.UseCase, usersUseCase users.Us
 }
 
 func (h *Handler) Get(c *gin.Context) {
+	var user *users.User
 	query := items.GetItemsQuery{}
 	err := c.ShouldBindQuery(&query)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if exists {
+		payload := payloadAny.(auth.JWTPayload)
+		user, err = h.usersUseCase.GetById(c.Request.Context(), payload.UserID)
+		if err != nil {
+			c.JSON(httpErrors.ErrorResponse(err))
+		}
+		log.Print(":HEEELPL")
 	}
 
 	itemsResponse, err := h.useCase.Get(c.Request.Context(), &query)
@@ -48,6 +59,7 @@ func (h *Handler) Get(c *gin.Context) {
 		"items":      itemsResponse.Items,
 		"query":      query,
 		"pagination": itemsResponse.Pagination,
+		"user":       *user,
 	})
 }
 
