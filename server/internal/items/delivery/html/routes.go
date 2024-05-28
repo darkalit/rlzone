@@ -10,9 +10,11 @@ func MapItemRoutes(router *gin.RouterGroup, h *Handler, mw *middleware.Middlewar
 	itemsRoute := router.Group("/items")
 	{
 		itemsRoute.GET("", h.Get)
-		itemsRoute.GET("/create", h.CreateStockGet)
-		itemsRoute.POST("/create", h.CreateStockPost)
+		itemsRoute.GET("/create", mw.AuthJWTMiddleware, mw.PermitAdmin, h.CreateStockGet)
+		itemsRoute.POST("/create", mw.AuthJWTMiddleware, mw.PermitAdmin, h.CreateStockPost)
 		itemsRoute.GET("/list", h.GetList)
 		itemsRoute.POST("/buy", mw.AuthJWTMiddleware, h.BuyItem)
+		itemsRoute.GET("/inventory", mw.AuthJWTMiddleware, h.Inventory)
+		itemsRoute.POST("/sell", mw.AuthJWTMiddleware, h.SellItem)
 	}
 }

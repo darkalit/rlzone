@@ -30,7 +30,7 @@
             alt="profileIcon"
             style="width: 40px; height: 40px"
         /></a>
-        <p class="header-main-text">AdminUser</p>
+        <p class="header-main-text">{{ .EpicID }}</p>
       </div>
     </div>
     {{ else if eq .Role "user" }}
@@ -39,7 +39,7 @@
         <a href="/items" class="header-buy">Buy</a>
       </div>
       <div class="header-sell-block">
-        <a href="/inventory" class="header-sell">Inventory</a>
+        <a href="/items/inventory" class="header-sell">Inventory</a>
       </div>
     </div>
     <div class="header-right-block">
@@ -54,7 +54,7 @@
           alt="Credits"
           style="width: 24px; height: 24px"
         />
-        <p class="header-main-text">1290</p>
+        <p class="header-main-text">{{ .Balance }}</p>
       </div>
       <div class="header-block-settings button-add-scale">
         <a class="header-svg-icons" href="#"
@@ -64,7 +64,7 @@
             style="width: 40px; height: 40px"
         /></a>
         <a href="#">
-          <p class="header-main-text">SampleName</p>
+          <p class="header-main-text">{{ .EpicID }}</p>
         </a>
       </div>
     </div>

@@ -233,7 +233,7 @@ func (r *ItemsRepo) BuyItem(ctx context.Context, itemId uint, userId uint) (*Inv
 		tx.Create(&inventoryItem)
 	} else if res.Error != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, res.Error
 	}
 
 	log.Printf("%+v\n", inventoryItem)
@@ -285,10 +285,12 @@ func (r *ItemsRepo) SellItem(
 	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName)).Begin()
 
 	inventoryItem = InventoryItem{ItemID: itemId, UserID: userId}
-	err := tx.FirstOrCreate(&inventoryItem).Error
-	if err != nil {
+	res := tx.Where("item_id = ? AND user_id = ?", itemId, userId).First(&inventoryItem)
+	if res.RowsAffected == 0 {
+		tx.Create(&inventoryItem)
+	} else if res.Error != nil {
 		tx.Rollback()
-		return nil, err
+		return nil, res.Error
 	}
 
 	if inventoryItem.Count == 0 {
@@ -297,7 +299,7 @@ func (r *ItemsRepo) SellItem(
 	}
 
 	inventoryItem.Count--
-	err = tx.Save(&inventoryItem).Error
+	err := tx.Save(&inventoryItem).Error
 	if err != nil {
 		tx.Rollback()
 		return nil, err
@@ -347,7 +349,7 @@ func (r *ItemsRepo) GetInventory(
 	var inventoryItems []InventoryItem
 	tx := r.db.WithContext(ctx)
 	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName))
-	tx = tx.Model(&InventoryItem{}).Preload("Item")
+	tx = tx.Model(&InventoryItem{}).Preload("Item").Preload("Item.Stock")
 
 	tx = tx.Where(&InventoryItem{UserID: userId})
 

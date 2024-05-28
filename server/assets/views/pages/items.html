@@ -129,7 +129,7 @@
         </div>
         <div class="main-content-block">
           <div class="main-content-block-items">
-            {{ if not .items}}
+            {{ if and (not .items) (not .inventoryItems) }}
             <div
               style="
                 display: flex;
@@ -141,8 +141,12 @@
             >
               <p class="main-text" style="font-size: 20px">No items</p>
             </div>
-            {{ end }} {{range .items}} {{template "item-card-buy.html" .}}
-            {{end}}
+            {{ end }}
+            {{ if .inventoryItems }}
+              {{range .inventoryItems}} {{template "item-card-inventory.html" .}} {{end}}
+            {{ else }}
+              {{range .items}} {{template "item-card-buy.html" .}} {{end}}
+            {{ end }}
           </div>
 
           <div class="main-content-block-pages">
@@ -265,7 +269,7 @@
       <div class="grey-container-shade modal-content">
         <div class="modal-header">
           <span class="close">&times;</span>
-          <h2>Confirm the purchase</h2>
+          <h2>Confirm?</h2>
         </div>
         <div
           class="modal-body"
@@ -287,14 +291,14 @@
         <form
           class="modal-buttons"
           style="display: flex; justify-content: space-around; margin-top: 32px"
-          action="/items/buy"
+          id="modalForm"
           method="post"
         >
           <input type="hidden" id="modalItemId" name="item_id" value=""/>
           <button class="button-outline" type="button" id="cancel">
             Cancel
           </button>
-          <button class="button-fill" type="submit" id="confirmBuy" onclick="console.log(document.getElementById('modalItemId').value)">Confirm</button>
+          <button class="button-fill" type="submit" id="confirm">Confirm</button>
         </form>
       </div>
     </div>
@@ -302,8 +306,6 @@
     {{template "footer.html"}}
 
     <script>
-      console.log({{.user}})
-
       const modal = document.getElementById("myModal");
       const span = document.getElementsByClassName("close")[0];
       const btnClose = document.getElementById("cancel");
@@ -322,8 +324,14 @@
         }
       }
 
-      function setModalInfo(itemId) {
+      function setModalInfo(itemId, action) {
         modal.style.display = 'block';
+        if (action == "buy") {
+          document.getElementById('modalForm').action = "/items/buy"
+        } else if (action == "sell") {
+          document.getElementById('modalForm').action = "/items/sell"
+        }
+
         fetch('/api/v1/items/' + itemId)
           .then((res) => res.json())
           .then((data) => {

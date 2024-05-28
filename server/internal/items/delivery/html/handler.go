@@ -1,7 +1,6 @@
 package html
 
 import (
-	"log"
 	"math"
 	"net/http"
 
@@ -44,7 +43,6 @@ func (h *Handler) Get(c *gin.Context) {
 		if err != nil {
 			c.JSON(httpErrors.ErrorResponse(err))
 		}
-		log.Print(":HEEELPL")
 	}
 
 	itemsResponse, err := h.useCase.Get(c.Request.Context(), &query)
@@ -59,7 +57,7 @@ func (h *Handler) Get(c *gin.Context) {
 		"items":      itemsResponse.Items,
 		"query":      query,
 		"pagination": itemsResponse.Pagination,
-		"user":       *user,
+		"user":       user,
 	})
 }
 
@@ -87,7 +85,6 @@ func (h *Handler) BuyItem(c *gin.Context) {
 	query := items.BuySellItemRequest{}
 	err := c.ShouldBind(&query)
 	if err != nil {
-		log.Printf("%+v\n", err)
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
 	}
@@ -111,6 +108,33 @@ func (h *Handler) BuyItem(c *gin.Context) {
 	c.Redirect(http.StatusFound, "/items")
 }
 
+func (h *Handler) SellItem(c *gin.Context) {
+	query := items.BuySellItemRequest{}
+	err := c.ShouldBind(&query)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if !exists {
+		c.JSON(
+			httpErrors.ErrorResponse(
+				httpErrors.NewRestErrorMessage(http.StatusUnauthorized, "JWT is undefined"),
+			),
+		)
+	}
+	payload := payloadAny.(auth.JWTPayload)
+
+	_, err = h.useCase.SellItem(c.Request.Context(), query.ItemID, payload.UserID)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.Redirect(http.StatusFound, "/items/inventory")
+}
+
 func (h *Handler) Inventory(c *gin.Context) {
 	query := items.GetItemsQuery{}
 	err := c.ShouldBindQuery(&query)
@@ -128,8 +152,9 @@ func (h *Handler) Inventory(c *gin.Context) {
 		)
 	}
 	payload := payloadAny.(auth.JWTPayload)
+	user, err := h.usersUseCase.GetById(c.Request.Context(), payload.UserID)
 
-	itemsResponse, err := h.useCase.GetInventory(c.Request.Context(), &query, payload.UserID)
+	itemsResponse, err := h.useCase.GetInventory(c.Request.Context(), &query, user.ID)
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
 		return
@@ -141,6 +166,7 @@ func (h *Handler) Inventory(c *gin.Context) {
 		"inventoryItems": itemsResponse.InventoryItems,
 		"query":          query,
 		"pagination":     itemsResponse.Pagination,
+		"user":           user,
 	})
 }
 
