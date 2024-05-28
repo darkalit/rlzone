@@ -319,6 +319,17 @@ input[type="number"] {
   gap: 12px;
 }
 
+.item-name-box {
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-name {
+  text-align: center;
+}
+
 .item-favorite-button,
 .item-add-to-cart-button {
   position: absolute;
