@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RL Zone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 64px 0px;
+      "
+    >
+      <form
+        action="/users/login"
+        method="post"
+        style="
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 16px;
+        "
+      >
+        <div style="display: flex; flex-direction: column">
+          <p style="margin: 0; font-size: 24px">EpicID</p>
+          <input type="text" name="epicID" style="font-size: 24px" />
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <p style="margin: 0; font-size: 24px">Email</p>
+          <input type="email" name="email" style="font-size: 24px" />
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <p style="margin: 0; font-size: 24px">Password</p>
+          <input type="password" name="password" style="font-size: 24px" />
+        </div>
+        <button
+          type="submit"
+          id="login"
+          style="margin-top: 16px; font-size: 24px"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
