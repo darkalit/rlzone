@@ -63,3 +63,7 @@ type CreateStockRequest struct {
 	Description string `json:"description" form:"description" binding:"required"`
 	ItemID      uint   `json:"item_id"     form:"item_id"     binding:"required"`
 }
+
+type BuySellItemRequest struct {
+	ItemID uint `json:"item_id" form:"item_id" binding:"required"`
+}

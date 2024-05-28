@@ -1,6 +1,7 @@
 package html
 
 import (
+	"log"
 	"math"
 	"net/http"
 
@@ -65,6 +66,34 @@ func (h *Handler) GetList(c *gin.Context) {
 	c.HTML(http.StatusOK, "modal-search-result.html", gin.H{
 		"items": itemsResponse.Items,
 	})
+}
+
+func (h *Handler) BuyItem(c *gin.Context) {
+	query := items.BuySellItemRequest{}
+	err := c.ShouldBind(&query)
+	if err != nil {
+		log.Printf("%+v\n", err)
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if !exists {
+		c.JSON(
+			httpErrors.ErrorResponse(
+				httpErrors.NewRestErrorMessage(http.StatusUnauthorized, "JWT is undefined"),
+			),
+		)
+	}
+	payload := payloadAny.(auth.JWTPayload)
+
+	_, err = h.useCase.BuyItem(c.Request.Context(), query.ItemID, payload.UserID)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.Redirect(http.StatusFound, "/items")
 }
 
 func (h *Handler) Inventory(c *gin.Context) {

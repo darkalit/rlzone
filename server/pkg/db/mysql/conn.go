@@ -47,6 +47,7 @@ func NewMySqlDB(c *config.Config) (*gorm.DB, error) {
 	db.AutoMigrate(
 		&items.Item{},
 		&items.Stock{},
+		&items.InventoryItem{},
 		&users.User{},
 		&users.Token{},
 	)

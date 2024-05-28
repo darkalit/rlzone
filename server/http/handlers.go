@@ -47,7 +47,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	restUsers.MapUserRoutes(v1, usersRestHandler, mw)
 	htmlUsers.MapItemRoutes(h, usersHtmlHandler)
 	restItems.MapItemRoutes(v1, itemsRestHandler, mw)
-	htmlItems.MapItemRoutes(h, itemsHtmlHandler)
+	htmlItems.MapItemRoutes(h, itemsHtmlHandler, mw)
 
 	return nil
 }

@@ -271,28 +271,31 @@
           class="modal-body"
           style="display: flex; justify-content: center; gap: 32px"
         >
-          <img src="{{.Image}}" style="width: 128px; height: 128px"></img>
+          <img src="" style="width: 128px; height: 128px" id="modalImage"></img>
           <div style="display: flex; flex-direction: column; gap: 16px">
-            <h2>{{.Name}}</h2>
+            <h2 id="modalName"></h2>
             <div style="display: flex; gap: 8px">
               <img
                 src="/assets/img/Credits.svg"
                 alt="credits"
                 style="width: 24px; height: 24px"
               />
-              <p class="main-text">{{.Price}}</p>
+              <p class="main-text" id="modalPrice"></p>
             </div>
           </div>
         </div>
-        <div
+        <form
           class="modal-buttons"
           style="display: flex; justify-content: space-around; margin-top: 32px"
+          action="/items/buy"
+          method="post"
         >
+          <input type="hidden" id="modalItemId" name="item_id" value=""/>
           <button class="button-outline" type="button" id="cancel">
             Cancel
           </button>
-          <button class="button-fill" id="confirmBuy">Confirm</button>
-        </div>
+          <button class="button-fill" type="submit" id="confirmBuy" onclick="console.log(document.getElementById('modalItemId').value)">Confirm</button>
+        </form>
       </div>
     </div>
 
@@ -300,13 +303,8 @@
 
     <script>
       const modal = document.getElementById("myModal");
-      const btn = document.getElementById("buy");
       const span = document.getElementsByClassName("close")[0];
       const btnClose = document.getElementById("cancel");
-
-      btn && (btn.onclick = function() {
-        modal.style.display = "block";
-      });
 
       span && (span.onclick = function() {
         modal.style.display = "none";

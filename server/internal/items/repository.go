@@ -3,6 +3,7 @@ package items
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"gorm.io/gorm"
 
@@ -215,7 +216,7 @@ func (r *ItemsRepo) BuyItem(ctx context.Context, itemId uint, userId uint) (*Inv
 	tx = tx.Exec(fmt.Sprintf("USE %s", r.cfg.DBName)).Begin()
 
 	item = Item{ID: itemId}
-	err := tx.First(&item).Error
+	err := tx.Model(&Item{}).Preload("Stock").First(&item).Error
 	if err != nil {
 		tx.Rollback()
 		return nil, err
@@ -227,11 +228,15 @@ func (r *ItemsRepo) BuyItem(ctx context.Context, itemId uint, userId uint) (*Inv
 	}
 
 	inventoryItem = InventoryItem{ItemID: itemId, UserID: userId}
-	err = tx.FirstOrCreate(&inventoryItem).Error
-	if err != nil {
+	res := tx.Where("item_id = ? AND user_id = ?", itemId, userId).First(&inventoryItem)
+	if res.RowsAffected == 0 {
+		tx.Create(&inventoryItem)
+	} else if res.Error != nil {
 		tx.Rollback()
 		return nil, err
 	}
+
+	log.Printf("%+v\n", inventoryItem)
 
 	inventoryItem.Count++
 	err = tx.Save(&inventoryItem).Error
@@ -299,7 +304,7 @@ func (r *ItemsRepo) SellItem(
 	}
 
 	item = Item{ID: itemId}
-	err = tx.First(&item).Error
+	err = tx.Model(&Item{}).Preload("Stock").First(&item).Error
 	if err != nil {
 		tx.Rollback()
 		return nil, err
