@@ -7,5 +7,7 @@ func MapItemRoutes(router *gin.RouterGroup, h *Handler) {
 	{
 		itemsRoute.GET("/login", h.LoginGet)
 		itemsRoute.POST("/login", h.LoginPost)
+		itemsRoute.GET("/register", h.RegisterGet)
+		itemsRoute.POST("/register", h.RegisterPost)
 	}
 }

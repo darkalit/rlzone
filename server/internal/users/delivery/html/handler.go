@@ -52,3 +52,34 @@ func (h *Handler) LoginPost(c *gin.Context) {
 
 	c.Redirect(http.StatusFound, "/items")
 }
+
+func (h *Handler) RegisterGet(c *gin.Context) {
+	c.HTML(http.StatusOK, "register.html", gin.H{})
+}
+
+func (h *Handler) RegisterPost(c *gin.Context) {
+	var registerRequest users.RegisterRequest
+
+	err := c.ShouldBind(&registerRequest)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	newUser, err := h.useCase.Register(c, &registerRequest)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+	}
+
+	c.SetCookie(
+		"jwt",
+		newUser.RefreshToken,
+		h.cfg.AuthCookieMaxAge,
+		"/",
+		c.Request.Host,
+		h.cfg.AuthCookieSecure,
+		h.cfg.AuthCookieHttpOnly,
+	)
+
+	c.Redirect(http.StatusFound, "/items")
+}

@@ -103,12 +103,6 @@ func (u *UsersUseCase) Login(ctx context.Context, request *LoginRequest) (*UserW
 		return nil, err
 	}
 
-	createdToken := Token{
-		RefreshToken: refreshToken,
-		UserID:       foundUser.ID,
-	}
-	u.repo.CreateOrUpdate(ctx, &createdToken)
-
 	return &UserWithTokens{
 		User:         *foundUser,
 		RefreshToken: refreshToken,
@@ -138,12 +132,6 @@ func (u *UsersUseCase) RefreshToken(
 	if err != nil {
 		return nil, err
 	}
-
-	token := Token{
-		UserID:       foundUser.ID,
-		RefreshToken: newRefreshToken,
-	}
-	u.repo.CreateOrUpdate(ctx, &token)
 
 	return &UserWithTokens{
 		User:         *foundUser,
