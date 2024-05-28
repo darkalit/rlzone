@@ -9,19 +9,22 @@ import (
 
 	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/internal/items"
+	"github.com/darkalit/rlzone/server/internal/users"
 	"github.com/darkalit/rlzone/server/pkg/auth"
 	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
 
 type Handler struct {
-	cfg     *config.Config
-	useCase items.UseCase
+	cfg          *config.Config
+	useCase      items.UseCase
+	usersUseCase users.UseCase
 }
 
-func NewHandler(cfg *config.Config, useCase items.UseCase) *Handler {
+func NewHandler(cfg *config.Config, useCase items.UseCase, usersUseCase users.UseCase) *Handler {
 	return &Handler{
-		cfg:     cfg,
-		useCase: useCase,
+		cfg:          cfg,
+		useCase:      useCase,
+		usersUseCase: usersUseCase,
 	}
 }
 
@@ -130,11 +133,22 @@ func (h *Handler) Inventory(c *gin.Context) {
 }
 
 func (h *Handler) CreateStockGet(c *gin.Context) {
+	var user *users.User
+
 	itemsResponse, err := h.useCase.Get(c.Request.Context(), &items.GetItemsQuery{
 		PageSize: 1,
 	})
 	if err != nil {
 		c.JSON(httpErrors.ErrorResponse(err))
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if exists {
+		payload := payloadAny.(auth.JWTPayload)
+		user, err = h.usersUseCase.GetById(c.Request.Context(), payload.UserID)
+		if err != nil {
+			c.JSON(httpErrors.ErrorResponse(err))
+		}
 	}
 
 	if len(itemsResponse.Items) == 0 {
@@ -143,6 +157,7 @@ func (h *Handler) CreateStockGet(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "items-create.html", gin.H{
 		"item": itemsResponse.Items[0],
+		"user": user,
 	})
 }
 

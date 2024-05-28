@@ -40,7 +40,7 @@ func (s *Server) MapHandlers(e *gin.Engine) error {
 	itemsRepo := items.NewItemRepository(s.config, s.db)
 	itemsUseCase := items.NewItemUseCase(itemsRepo)
 	itemsRestHandler := restItems.NewHandler(s.config, itemsUseCase)
-	itemsHtmlHandler := htmlItems.NewHandler(s.config, itemsUseCase)
+	itemsHtmlHandler := htmlItems.NewHandler(s.config, itemsUseCase, usersUseCase)
 
 	mw := middleware.NewMiddlewareManager(s.config, usersUseCase)
 	restHealth.MapHealthRoutes(v1, healthRestHandler)
