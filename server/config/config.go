@@ -1,45 +1,56 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"os"
+	"regexp"
+
+	"github.com/caarlos0/env/v11"
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
-	AppEnv  string `mapstructure:"APP_ENV"`
-	AppPort string `mapstructure:"APP_PORT"`
+	AppEnv  string `env:"APP_ENV"`
+	AppPort string `env:"APP_PORT"`
 
-	DBHost string `mapstructure:"DB_HOST"`
-	DBPort string `mapstructure:"DB_PORT"`
-	DBUser string `mapstructure:"DB_USER"`
-	DBPass string `mapstructure:"DB_PASS"`
-	DBName string `mapstructure:"DB_NAME"`
+	DBHost string `env:"DB_HOST"`
+	DBPort string `env:"DB_PORT"`
+	DBUser string `env:"DB_USER"`
+	DBPass string `env:"DB_PASS"`
+	DBName string `env:"DB_NAME"`
 
-	DBMaxOpenConns    int `mapstructure:"DB_MAX_OPEN_CONNS"`
-	DBConnMaxLifetime int `mapstructure:"DB_CONN_MAX_LIFETIME"`
-	DBMaxIdleConn     int `mapstructure:"DB_MAX_IDLE_CONN"`
-	DBConnMaxIdleTime int `mapstructure:"DB_CONN_MAX_IDLE_TIME"`
+	DBMaxOpenConns    int `env:"DB_MAX_OPEN_CONNS"`
+	DBConnMaxLifetime int `env:"DB_CONN_MAX_LIFETIME"`
+	DBMaxIdleConn     int `env:"DB_MAX_IDLE_CONN"`
+	DBConnMaxIdleTime int `env:"DB_CONN_MAX_IDLE_TIME"`
 
-	AccessTokenSecret      string `mapstructure:"ACCESS_TOKEN_SECRET"`
-	AccessTokenExpiryHour  int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
-	RefreshTokenSecret     string `mapstructure:"REFRESH_TOKEN_SECRET"`
-	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`
+	AccessTokenSecret      string `env:"ACCESS_TOKEN_SECRET"`
+	AccessTokenExpiryHour  int    `env:"ACCESS_TOKEN_EXPIRY_HOUR"`
+	RefreshTokenSecret     string `env:"REFRESH_TOKEN_SECRET"`
+	RefreshTokenExpiryHour int    `env:"REFRESH_TOKEN_EXPIRY_HOUR"`
 
-	TokenIssuer string `mapstructure:"TOKEN_ISSUER"`
+	TokenIssuer string `env:"TOKEN_ISSUER"`
 
-	AuthCookieName     string `mapstructure:"AUTH_COOKIE_NAME"`
-	AuthCookieMaxAge   int    `mapstructure:"AUTH_COOKIE_MAX_AGE"`
-	AuthCookieSecure   bool   `mapstructure:"AUTH_COOKIE_SECURE"`
-	AuthCookieHttpOnly bool   `mapstructure:"AUTH_COOKIE_HTTP_ONLY"`
+	AuthCookieName     string `env:"AUTH_COOKIE_NAME"`
+	AuthCookieMaxAge   int    `env:"AUTH_COOKIE_MAX_AGE"`
+	AuthCookieSecure   bool   `env:"AUTH_COOKIE_SECURE"`
+	AuthCookieHttpOnly bool   `env:"AUTH_COOKIE_HTTP_ONLY"`
 }
 
 func GetConfig() (*Config, error) {
 	config := Config{}
-	viper.SetConfigFile(".env")
-
-	err := viper.ReadInConfig()
+	projectName := regexp.MustCompile(`^(.*rlzone[/\\]server)`)
+	path, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 
-	err = viper.Unmarshal(&config)
+	path = string(projectName.Find([]byte(path))) + "/.env"
+	err = godotenv.Load(path)
+	if err != nil {
+		return nil, err
+	}
+
+	err = env.Parse(&config)
 	if err != nil {
 		return nil, err
 	}
