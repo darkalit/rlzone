@@ -8,6 +8,7 @@ import (
 
 	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/internal/items"
+	"github.com/darkalit/rlzone/server/pkg/auth"
 	"github.com/darkalit/rlzone/server/pkg/httpErrors"
 )
 
@@ -72,4 +73,58 @@ func (h *Handler) CreateStock(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, createdStock)
+}
+
+func (h *Handler) Buy(c *gin.Context) {
+	query := items.BuySellItemRequest{}
+	err := c.ShouldBind(&query)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if !exists {
+		c.JSON(
+			httpErrors.ErrorResponse(
+				httpErrors.NewRestErrorMessage(http.StatusUnauthorized, "JWT is undefined"),
+			),
+		)
+	}
+	payload := payloadAny.(auth.JWTPayload)
+
+	inventoryItem, err := h.useCase.BuyItem(c.Request.Context(), query.ItemID, payload.UserID)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, inventoryItem)
+}
+
+func (h *Handler) Sell(c *gin.Context) {
+	query := items.BuySellItemRequest{}
+	err := c.ShouldBind(&query)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	payloadAny, exists := c.Get("payload")
+	if !exists {
+		c.JSON(
+			httpErrors.ErrorResponse(
+				httpErrors.NewRestErrorMessage(http.StatusUnauthorized, "JWT is undefined"),
+			),
+		)
+	}
+	payload := payloadAny.(auth.JWTPayload)
+
+	inventoryItem, err := h.useCase.SellItem(c.Request.Context(), query.ItemID, payload.UserID)
+	if err != nil {
+		c.JSON(httpErrors.ErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, inventoryItem)
 }
