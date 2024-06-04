@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,7 +23,6 @@ func (mw *MiddlewareManager) SetPayload(c *gin.Context) {
 		return
 	}
 
-	log.Print("GHEJIOGHUSUIKOL")
 	c.Set("payload", *payload)
 	c.Next()
 }
