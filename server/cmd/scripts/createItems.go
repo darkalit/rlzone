@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"gorm.io/gorm"
+
 	"github.com/darkalit/rlzone/server/config"
 	"github.com/darkalit/rlzone/server/internal/items"
 	"github.com/darkalit/rlzone/server/pkg/db/mysql"
@@ -29,32 +31,10 @@ type Item struct {
 	Series     string      `json:"Series"`
 }
 
-func main() {
-	cfg, err := config.GetConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	db, err := mysql.NewMySqlDB(cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	data, err := os.ReadFile("./assets/data.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var itemsArray []Item
-	err = json.Unmarshal([]byte(data), &itemsArray)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx := context.TODO()
+func createItems(ctx context.Context, db *gorm.DB, cfg *config.Config, data []Item) {
 	itemRepo := items.NewItemRepository(cfg, db)
 
-	for _, val := range itemsArray {
+	for _, val := range data {
 		switch val.Type {
 		case "Body":
 			fallthrough
@@ -104,4 +84,39 @@ func main() {
 			break
 		}
 	}
+}
+
+func main() {
+	cfg, err := config.GetConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := mysql.NewMySqlDB(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data, err := os.ReadFile("./assets/data.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var itemsArray []Item
+	err = json.Unmarshal([]byte(data), &itemsArray)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx := context.TODO()
+
+	createItems(ctx, db, cfg, itemsArray)
+
+	cfg.DBName = "rlzonetest"
+	db, err = mysql.NewMySqlDB(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	createItems(ctx, db, cfg, itemsArray)
 }
